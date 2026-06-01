@@ -7,7 +7,7 @@
       name: 'CityScope',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142328/CLBB-12-scaled.jpg',
       description:
-        'Construida con miles de piezas de LEGO, a través de una interfaz física en la que los ciudadanos pueden interactuar con los proyectos, creando más de 100 combinaciones de ciudad cuyos impactos reflejan el carácter de la ciencia de ciudad instalada en Concepción.',
+        'A través de una maqueta construida con miles de piezas LEGO, esta herramienta transforma la conversación sobre el futuro de la ciudad en una experiencia tangible, lúdica y colectiva para todo público. Una invitación a imaginar, cuestionar y comprender el impacto real que tendrán los proyectos urbanos futuros en la vida cotidiana  del sector de la Costanera de Concepción.',
       accent: '#ffcb05'
     },
     {
@@ -17,7 +17,7 @@
       sub: 'San Pedro de la Paz',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142940/01-1-scaled.png',
       description:
-        'Con datos de Waze para monitorear tráfico, congestión, velocidades y eventos viales en tiempo real e histórico. Visualiza y realiza consultas dinámicas del tráfico, apoyando el análisis y toma de decisiones en movilidad urbana.',
+        'En alianza con Waze, se desarrolló un visor web que permite comprender patrones de congestión y accidentes vehiculares en diferentes ciudades de Chile. Una plataforma que convierte datos en tiempo real en una nueva forma de entender la movilidad, invitando a académicos y tomadores de decisión a investigar y explorar, cómo la movilidad puede transformarse con decisiones simples y conectadas con un territorio dinámico.',
       accent: '#ffcc05'
     },
     {
@@ -27,7 +27,7 @@
       sub: 'Talcahuano',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142349/tablet.png',
       description:
-        'En alianza con Puertos de Talcahuano, creamos el primer entorno virtual interactivo para una ciudad portuaria en Latinoamérica. Expandimos las capacidades de análisis, interacción y modelación de escenarios futuros disponible para toda la comunidad.',
+        'Junto a Puertos de Talcahuano se creó una plataforma digital que permite a sus equipos técnicos evaluar proyectos urbanos existentes e imaginar nuevos escenarios utilizando datos estáticos y en tiempo real, para hacer visible el futuro antes de construirlo.',
       accent: '#ffcc05'
     },
     {
@@ -36,7 +36,7 @@
       name: 'Visor Incendios Forestales',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142742/01-scaled.png',
       description:
-        'En colaboración con Deep-Hub e Imagine-IT, desarrollamos una plataforma para monitorear emergencias y apoyar la toma de decisiones. Integra imágenes satelitales VIIRS (NASA/FIRMS), datos censales, IDE Chile y Waze para evaluar impactos en tiempo real.',
+        'En alianza con Deep-Hub e Imagine-IT, creamos un visor de emergencia que permite monitorear en tiempo real infraestructuras críticas y población potencialmente en riesgo de verse afectada ante situaciones de desastres. Una plataforma pensada para  actuar y tomar decisiones basadas en datos capaces de cambiar el desenlace en una situación de emergencia.',
       accent: '#ffcc05'
     },
     {
@@ -45,7 +45,7 @@
       sub: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142625/MSB-6-scaled.png',
       description:
-        'Visualización urbana a escala metropolitana, integrando grandes volúmenes de datos sobre territorio, movilidad, uso de suelo, demografía, infraestructura e inversión pública. Apoya la planificación y gestión del Gran Concepción basada en evidencia científica.',
+        'Desarrollamos una mesa digital que permite sentarnos en torno a los datos para analizar, discutir y visualizar más de 1.500 indicadores del territorio de forma integrada. Una herramienta pensada para impulsar el encuentro entre la academia, tomadores de decisión y comunidades, transformando la información compleja en conversaciones para mejorar nuestra ciudad.',
       accent: '#ffcc05'
     },
     {
@@ -54,7 +54,7 @@
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28170425/DataIS-Ckan.png',
       imgPos: '35% center',
       description:
-        'Plataforma de inteligencia territorial que integra, organiza y disponibiliza datos urbanos para apoyar el análisis y comprensión del territorio, consolidando información interoperable para fortalecer la planificación, investigación y toma de decisiones.',
+      'Diseñamos el catálogo de datos territoriales actualizado más grande de la región del Biobío, una plataforma web de libre acceso para que la academia, estudiantes y equipos técnicos del sector público y privado puedan acceder, de forma simple y ordenada, a los datos que necesitan para entender el territorio, cuestionarlo y proyectar mejores decisiones para su futuro.',
       accent: '#ffcc05'
     },
     {
@@ -62,7 +62,7 @@
       name: 'CommunityScope',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142449/Community-Scope-scaled.png',
       description:
-        'Plataforma de experimentación urbana que permite visualizar y analizar ideas ciudadanas para evaluar sus posibles impactos en la ciudad. Apoya el análisis urbano y la toma de decisiones mediante simulación y visualización de escenarios.',
+        'Creamos una plataforma digital centrada en el diseño de espacios públicos que transforma la participación ciudadana en una experiencia colectiva e innovadora. Apoyada por inteligencia artificial, esta herramienta de investigación creativa, convierte ideas, deseos y tensiones urbanas en escenarios visibles, abriendo la posibilidad de construir ciudades también desde los sueños de quienes las habitan.',
       accent: '#ffcc05'
     }
   ];
@@ -388,7 +388,7 @@
 
   .card-desc {
     font-size: clamp(0.68rem, 1vw, 0.84rem);
-    color: rgba(255, 255, 255, 0.58);
+    color: rgba(255, 255, 255);
     line-height: 1.65;
     flex: 1;
     overflow: hidden;
