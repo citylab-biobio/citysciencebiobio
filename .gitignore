@@ -30,6 +30,12 @@ Thumbs.db
 .vscode/
 *.swp
 
+# Fonts (licensed, hosted on S3)
+static/*.otf
+static/*.ttf
+static/*.woff
+static/*.woff2
+
 # Personal / local
 .personal/
 
