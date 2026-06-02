@@ -5,11 +5,13 @@
   import Schedule from '$lib/components/Schedule.svelte';
   import Agenda from '$lib/components/Agenda.svelte';
   import Partners from '$lib/components/Partners.svelte';
+  import AnimatedSvg from '$lib/components/AnimatedSvg.svelte';
 </script>
 
 <main>
   <Hero />
   <About />
+  <AnimatedSvg preset="aboutProjects" />
   <Projects />
   <Schedule />
   <Agenda />
