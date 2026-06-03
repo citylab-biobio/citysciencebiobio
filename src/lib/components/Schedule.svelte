@@ -1,187 +1,133 @@
 <script>
   import { onMount } from 'svelte';
 
-  const events = [
-    {
-      time: '18:30 – 18:45',
-      title: 'Acreditación y bienvenida',
-      people: []
-    },
-    {
-      time: '18:45 – 18:50',
-      title: 'Palabras de inicio',
-      people: [
-        { name: 'Fernando Pérez', role: 'Director Principal, City Lab Biobío' },
-        { name: 'Helen Martín', role: 'Consejera Nacional, Cámara Chilena de la Construcción' }
-      ]
-    },
-    {
-      time: '18:50 – 19:00',
-      title: 'Video City Lab Biobío: cuatro años de ciencia de ciudad',
-      people: []
-    },
-    {
-      time: '19:00 – 19:30',
-      title: 'Palabras organizadores',
-      people: [
-        { name: 'Jacqueline Sepúlveda', role: 'Rectora, Universidad de Concepción' },
-        { name: 'Sergio Giacaman', role: 'Gobernador Regional del Biobío' },
-        { name: 'Alfredo Echavarría', role: 'Presidente Nacional, CChC' },
-        { name: 'Patricio Donoso', role: 'Presidente Directorio, Corporación Ciudades' }
-      ]
-    },
-    {
-      time: '19:30 – 19:45',
-      title: 'Presentación: Ciencia urbana del MIT Media Lab',
-      people: [
-        { name: 'Naroa Coretti', role: 'Research Scientist, MIT Media Lab' }
-      ]
-    },
-    {
-      time: '19:45 – 20:15',
-      title: 'Presentación y recorrido: Tecnología urbana con impacto',
-      people: [
-        { name: 'Fernando Pérez', role: 'Director Principal, City Lab Biobío' },
-        { name: 'Marcela Martínez', role: 'Directora de Estudios, City Lab Biobío' }
-      ],
-    },
-    {
-      time: '20:15 – 20:20',
-      title: 'Palabras auspiciadores + Inicio cóctel',
-      people: []
-    }
-  ];
+  const VIDEO_SRC = 'https://d26q11cgz8q0ri.cloudfront.net/2026/06/03181954/movilidad.mp4';
+  const VENUE_IMG = 'https://img.chilearq.com/fotos/650/2018-10-03-8919KLP6466.jpg';
 
-  let headerEl, badgeEl, speakerEl, venueEl;
-  let tlItemEls = [];
+  // Total px of scroll for the pinned section — matches Projects' SCROLL_PER_CARD pattern.
+  const SCROLL_PX = 3200;
 
-  let headerP = 0, badgeP = 0, speakerP = 0, venueP = 0;
-  let tlPs = events.map(() => 0);
+  let sectionEl, videoEl, mountainEl;
+  let footerEls = [];
 
-  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  // ── Animation state ──
+  let mw = 340, mh = 460, mr = 16, mscale = 1, darken = 0;
+  // Overlay backdrop blooms in softly; each text element staggers in individually.
+  let overlayOp = 0, overlayBlur = 0;
+  let elR = [0, 0, 0, 0, 0, 0]; // caption, title, sub, text1, text2, meta+link
+  let footerReveals = [0, 0];
+  let mountainClip = 100, mountainLabel = 0;
 
-  function getP(el, threshold = 0.88) {
-    if (!el) return 0;
-    const rect = el.getBoundingClientRect();
-    return easeOut(Math.max(0, Math.min(1, 1 - rect.top / (window.innerHeight * threshold))));
-  }
+  const clamp  = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const lerp   = (a, b, t) => a + (b - a) * t;
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+  const easeOutExpo  = (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
   onMount(() => {
+    // Autoplay immediately — video is background from frame 0.
+    videoEl?.play().catch(() => {});
+
     let rafId;
+
     function tick() {
-      headerP  = getP(headerEl,  0.9);
-      badgeP   = getP(badgeEl,   0.92);
-      speakerP = getP(speakerEl, 0.88);
-      venueP   = getP(venueEl,   0.92);
-      tlPs = tlItemEls.map(el => getP(el, 0.95));
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+
+      if (sectionEl) {
+        const rect  = sectionEl.getBoundingClientRect();
+        const range = sectionEl.offsetHeight - vh;
+        // p: 0 (section top hits viewport top) → 1 (section bottom hits viewport bottom)
+        const p = range > 0 ? clamp(-rect.top / range) : 0;
+
+        // Phase 2 (0.18 → 0.55): video frame expands.
+        const e = easeOutExpo(clamp((p - 0.18) / 0.37));
+        mw = lerp(Math.min(340, vw * 0.82), vw * 0.92, e);
+        mh = lerp(Math.min(460, vh * 0.58), vh * 0.88, e);
+        mr = lerp(16, 4, e);
+        mscale = 1 + 0.08 * e;
+        darken = 0.4 * e;
+
+        // Phase 3 (0.54 → 0.88): overlay blooms in, then text staggers. Hold (0.88→1).
+        // ┌─ TWEAK GUIDE ────────────────────────────────────────────────────────────┐
+        // │ Start earlier / end later  →  change 0.54 and/or 0.34 (denominator)     │
+        // │ Backdrop speed             →  change 0.55 (larger = slower bloom)        │
+        // │ Blur ceiling               →  change * 8 (e.g. * 12 for more glass)     │
+        // │ Text stagger gap           →  change 0.11 (larger = more spread apart)   │
+        // │ Per-element reveal speed   →  change 0.34 (larger = each fades slower)   │
+        // └──────────────────────────────────────────────────────────────────────────┘
+        const pr = clamp((p - 0.54) / 0.34);
+        // easeOutCubic (not Expo) keeps the bloom in sync with Lenis' own smooth
+        // scroll easing — Expo front-loads motion and fights the physical scroll feel.
+        overlayOp   = easeOutCubic(clamp(pr / 0.55));
+        overlayBlur = overlayOp * 8;
+        // Each element on its own gentle curve, 0.11 apart — longer window per element.
+        const s = (offset) => easeOutCubic(clamp((pr - offset) / 0.34));
+        elR = [0, 0.11, 0.22, 0.33, 0.44, 0.56].map(o => s(o));
+      }
+
+      // Footer text rises + unblurs on entry.
+      footerReveals = footerEls.map((el) => {
+        if (!el) return 0;
+        const r = el.getBoundingClientRect();
+        return easeOutCubic(clamp(1 - r.top / (window.innerHeight * 0.85)));
+      });
+
+      // Closing shot wipes up.
+      if (mountainEl) {
+        const r  = mountainEl.getBoundingClientRect();
+        const pm = easeOutCubic(clamp(1 - r.top / (window.innerHeight * 0.8)));
+        mountainClip  = (1 - pm) * 100;
+        mountainLabel = clamp((pm - 0.4) / 0.4);
+      }
+
       rafId = requestAnimationFrame(tick);
     }
+
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
   });
 </script>
 
-<section id="programa" class="section-padding">
-  <div class="container">
+<svelte:head>
+  <link rel="preload" as="video" href={VIDEO_SRC} type="video/mp4" />
+</svelte:head>
 
-    <div
-      class="header"
-      bind:this={headerEl}
-      style="opacity:{headerP}; transform: translateY({(1 - headerP) * 32}px)"
-    >
-      <p class="section-label">● Programa actividad</p>
-      <h2 class="section-title">Lanzamiento</h2>
-    </div>
+<!-- px-height section so sticky inner dwell matches Projects' SCROLL_PER_CARD pattern -->
+<section id="programa" class="launch" bind:this={sectionEl} style="height: calc(100vh + {SCROLL_PX}px);">
 
-    <div class="layout">
-      <!-- Timeline -->
-      <div class="timeline-wrap">
+  <div class="sticky-wrap">
 
-        <div class="timeline">
-          {#each events as ev, i}
-            <div
-              class="tl-item"
-              bind:this={tlItemEls[i]}
-              style="opacity:{tlPs[i]}; transform: translateX({(1 - tlPs[i]) * -48}px)"
-            >
-              <div class="tl-connector">
-                <div class="tl-dot"></div>
-                {#if i < events.length - 1}<div class="tl-line"></div>{/if}
-              </div>
-              <div class="tl-content">
-                <span class="tl-time">{ev.time}</span>
-                <h3 class="tl-title">{ev.title}</h3>
-                {#if ev.people.length}
-                  <div class="tl-people">
-                    {#each ev.people as p}
-                      <div class="person">
-                        <span class="person-name">{p.name}</span>
-                        <span class="person-role">{p.role}</span>
-                      </div>
-                    {/each}
-                  </div>
-                {/if}
-                {#if ev.items}
-                  <ul class="tl-items">
-                    {#each ev.items as item}
-                      <li>● {item}</li>
-                    {/each}
-                  </ul>
-                {/if}
-              </div>
-            </div>
-          {/each}
-        </div>
-      </div>
+    <!-- Video (rendered first, always visible) -->
+    <div class="media-frame" style="width:{mw}px; height:{mh}px; border-radius:{mr}px;">
+      <video
+        class="media-vid"
+        bind:this={videoEl}
+        src={VIDEO_SRC}
+        loop muted playsinline autoplay preload="auto"
+        style="transform: scale({mscale});"
+      ></video>
+      <div class="media-darken" style="background: rgba(0,0,0,{darken});"></div>
 
-      <!-- Speaker card -->
-      <div class="speaker-wrap">
-        <p class="section-label" style="margin-bottom: 1.5rem">Ponente destacada</p>
-        <div
-          class="speaker-card glass"
-          bind:this={speakerEl}
-          style="opacity:{speakerP}; transform: translateX({(1 - speakerP) * 56}px)"
-        >
-          <div class="speaker-img-wrap">
-            <img
-              src="https://dam-prod.media.mit.edu/thumb/2026/03/26/NaroaCoretti(2).jpg.800x800.jpg"
-              alt="Naroa Coretti — placeholder"
-              loading="lazy"
-            />
-            <div class="speaker-img-overlay"></div>
-          </div>
-          <div class="speaker-info">
-            <h3 class="speaker-name yellow">Naroa Coretti</h3>
-            <p class="speaker-title">Research Scientist, Ph.D</p>
-            <p class="speaker-subtitle">Experta global en movilidad y transporte del MIT Media Lab</p>
-            <p class="speaker-bio">
-              Su trabajo destaca en el campo de la movilidad urbana, creando modos
-              de transporte más sostenibles, como en su proyecto de Bicicleta
-              Autónoma con el MIT.
-            </p>
-            <div class="speaker-tag glass">
-              <span><a href="https://www.media.mit.edu/people/naroa/overview/" target="_blank" rel="noopener noreferrer">MIT Media Lab</a></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Venue -->
-        <div
-          class="venue-card glass"
-          bind:this={venueEl}
-          style="opacity:{venueP}; transform: translateY({(1 - venueP) * 32}px)"
-        >
-          <p class="section-label">Lugar</p>
-          <h4 class="venue-name">Biblioteca Central</h4>
-          <p class="venue-sub">Universidad de Concepción</p>
-          <p class="venue-city">Concepción, Chile</p>
-          <div class="venue-img-wrap">
-            <img
-              src="https://assets.tvu.cl/2022/05/biblioteca-central-udec-850x400.jpeg"
-              alt="Universidad de Concepción — placeholder"
-              loading="lazy"
-            />
-          </div>
+      <!-- Overlay: blooms in softly, then text staggers -->
+      <div class="media-overlay" style="opacity:{overlayOp}; backdrop-filter:blur({overlayBlur}px); -webkit-backdrop-filter:blur({overlayBlur}px);">
+        <span class="ov-caption" style="opacity:{elR[0]}; transform:translateY({(1-elR[0])*22}px);">
+          #Masterclass
+        </span>
+        <div class="ov-content">
+          <h3 class="ov-title yellow" style="opacity:{elR[1]}; transform:translateY({(1-elR[1])*22}px);">Modelando el futuro de la movilidad</h3>
+          <p class="ov-sub" style="opacity:{elR[2]}; transform:translateY({(1-elR[2])*18}px);">Naroa Coretti - Research Scientist MIT Media Lab</p>
+          <p class="ov-text" style="opacity:{elR[3]}; transform:translateY({(1-elR[3])*16}px);">
+            ¿Qué pasaría si pudiéramos probar el futuro de nuestras ciudades antes de construirlo?
+            Naroa Coretti, investigadora científica de MIT City Science explorará cómo la simulación avanzada y los modelos basados en datos están transformando la forma en que entendemos, diseñamos y gestionamos los sistemas de movilidad del futuro.
+          </p>
+          <p class="ov-text" style="opacity:{elR[4]}; transform:translateY({(1-elR[4])*16}px);">
+            En City Science Biobío presentará cómo la simulación de ciudad permite anticipar
+            decisiones urbanas y diseñar territorios más sostenibles.
+          </p>
+          <p class="ov-meta" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);">16 Jun · 2026 — Concepción, Chile</p>
+          <a class="ov-link" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);" href="https://www.media.mit.edu/people/naroa/overview/" target="_blank" rel="noopener noreferrer">
+            MIT Media Lab ↗
+          </a>
         </div>
       </div>
     </div>
@@ -189,249 +135,228 @@
   </div>
 </section>
 
+<!-- Quote + credits -->
+<div class="footer-content">
+  <div
+    class="fc-quote"
+    bind:this={footerEls[0]}
+    style="opacity:{footerReveals[0]}; transform: translateY({(1 - footerReveals[0]) * 16}px); filter: blur({(1 - footerReveals[0]) * 5}px);"
+  >
+    <p class="fc-label">La charla</p>
+    <p>
+      Tecnología urbana con impacto: una mirada a cuatro años de innovación aplicada al
+      Biobío, del MIT Media Lab a las plataformas de datos territoriales del CLBB.
+    </p>
+  </div>
+
+  <div class="fc-divider"></div>
+
+  <div
+    class="fc-credits"
+    bind:this={footerEls[1]}
+    style="opacity:{footerReveals[1]}; transform: translateY({(1 - footerReveals[1]) * 16}px); filter: blur({(1 - footerReveals[1]) * 5}px);"
+  >
+    <p>El lugar</p>
+    <p>Biblioteca Central · UdeC</p>
+    <p>Concepción, Chile</p>
+  </div>
+</div>
+
+<!-- Closing shot -->
+<div class="mountain-footer" bind:this={mountainEl}>
+  <div class="mf-media" style="clip-path: inset({mountainClip}% 0 0 0);">
+    <img src={VENUE_IMG} alt="Biblioteca Central, Universidad de Concepción" />
+  </div>
+  <div class="mf-label" style="opacity:{mountainLabel};">
+    <span class="mf-time">15 Jun · 18:30 h</span>
+    <span class="mf-place">Acreditación &amp; cóctel inaugural</span>
+  </div>
+</div>
+
 <style>
-  .header {
-    margin-bottom: 3.5rem;
-    will-change: transform, opacity;
+  .launch {
+    background: var(--bg);
+    overflow: visible; /* section is taller than viewport, overflow must be visible */
   }
 
-  .layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-
-  @media (min-width: 900px) {
-    .layout {
-      grid-template-columns: 1fr 380px;
-    }
-  }
-
-  /* Date badge */
-  .date-badge {
-    display: inline-flex;
-    flex-direction: column;
+  /* Sticky inner — pinned at 100vh while the section scrolls past */
+  .sticky-wrap {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
-    background: var(--yellow);
-    border-radius: 50%;
-    color: #0a0a0a;
-    margin-bottom: 2rem;
-    will-change: transform, opacity;
-    transform-origin: center center;
+    overflow: hidden;
   }
 
-  .day { font-size: 1.6rem; font-weight: 700; line-height: 1; }
-  .month { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-  .hour { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-
-  /* Timeline */
-  .timeline { display: flex; flex-direction: column; }
-
-  .tl-item {
-    display: grid;
-    grid-template-columns: 24px 1fr;
-    gap: 1rem;
-    padding-bottom: 2rem;
-    will-change: transform, opacity;
-  }
-
-  .tl-connector {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 4px;
-  }
-
-  .tl-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--yellow);
-    border: 2px solid #0a0a0a;
-    outline: 2px solid var(--yellow);
+  /* ── Video frame ── */
+  .media-frame {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 40px 120px rgba(0, 0, 0, 0);
+    will-change: width, height;
     flex-shrink: 0;
   }
 
-  .tl-line {
-    width: 1.5px;
-    flex: 1;
-    background: rgba(245, 197, 24, 0.2);
-    margin-top: 6px;
-  }
-
-  .tl-time {
-    display: inline-flex;
-    align-items: center;
-    background: rgba(245, 197, 24, 0.12);
-    border: 1px solid rgba(245, 197, 24, 0.2);
-    color: var(--yellow);
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.04em;
-  }
-
-  .tl-title {
-    font-size: 0.98rem;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.4;
-    margin-bottom: 0.75rem;
-  }
-
-  .tl-people {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .person {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    align-items: baseline;
-  }
-
-  .person-name {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.85);
-  }
-
-  .person-role {
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.45);
-  }
-
-  .tl-items {
-    list-style: none;
-    margin-top: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .tl-items li {
-    font-size: 0.82rem;
-    color: rgba(255,255,255,0.5);
-  }
-
-  /* Speaker */
-  .speaker-card {
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-    will-change: transform, opacity;
-  }
-
-  .speaker-img-wrap {
-    position: relative;
-    height: 300px;
-  }
-
-  .speaker-img-wrap img {
+  .media-vid {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 700%;
-    filter: grayscale(20%);
+    will-change: transform;
   }
 
-  .speaker-img-overlay {
+  .media-darken { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+
+  .media-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 60%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background:
+      radial-gradient(ellipse at center, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.68) 100%),
+      linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.3) 55%);
+    will-change: opacity;
+    /* backdrop-filter driven by inline style so it grows smoothly */
   }
 
-  .speaker-info {
-    padding: 1.5rem;
-  }
-
-  .speaker-name {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-  }
-
-  .speaker-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.75);
-    margin-bottom: 0.15rem;
-  }
-
-  .speaker-subtitle {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.45);
-    margin-bottom: 1rem;
-  }
-
-  .speaker-bio {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.65;
-    margin-bottom: 1rem;
-  }
-
-  .speaker-tag {
-    display: inline-block;
-    padding: 0.3rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
+  .ov-caption {
+    position: absolute;
+    top: 2rem; left: 0; width: 100%;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
     color: var(--yellow);
-    border-radius: var(--radius-sm);
-  }
-  .speaker-tag a {
-    color: inherit;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s;
-    border-radius: var(--radius-sm);
-    padding: 0.3rem 0.75rem;
-    margin: -0.3rem -0.75rem;
-    display: inline-block;
-  }
-  .speaker-tag a:hover {
-    background: #ffcc05;
-    color: #1a1a1a;
-  }
-
-  /* Venue */
-  .venue-card {
-    padding: 1.5rem;
-    overflow: hidden;
     will-change: transform, opacity;
+    display: block;
   }
 
-  .venue-name {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 0.25rem;
+  .ov-content > * { will-change: transform, opacity; }
+
+  .ov-content { max-width: 46ch; will-change: transform, filter; }
+
+  .ov-title {
+    font-size: clamp(2rem, 5.5vw, 3.75rem);
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 0.75rem;
   }
 
-  .venue-sub {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 0.15rem;
-  }
-
-  .venue-city {
-    font-size: 0.82rem;
-    color: var(--yellow);
+  .ov-sub {
+    font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 1.5rem;
   }
 
-  .venue-img-wrap img {
-    width: 100%;
-    height: 140px;
+  .ov-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 1.1rem;
+  }
+
+  .ov-meta {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin: 0.5rem 0 1.75rem;
+  }
+
+  .ov-link {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--glass-border-yellow);
+    border-radius: var(--radius-full);
+    color: var(--yellow);
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: background 0.25s, color 0.25s;
+  }
+  .ov-link:hover { background: var(--yellow); color: #0a0a0a; }
+
+  /* ── Footer text ── */
+  .footer-content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 9rem 1.5rem;
+    text-align: center;
+  }
+
+  .fc-quote {
+    font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    will-change: opacity, transform, filter;
+  }
+
+  .fc-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 1.25rem;
+  }
+
+  .fc-divider {
+    width: 1px;
+    height: 80px;
+    margin: 3.5rem auto;
+    background: linear-gradient(var(--yellow), transparent);
+  }
+
+  .fc-credits {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.5);
+    line-height: 2;
+    will-change: opacity, transform, filter;
+  }
+
+  /* ── Closing shot ── */
+  .mountain-footer { position: relative; height: 60vh; overflow: hidden; }
+
+  .mf-media { position: absolute; inset: 0; will-change: clip-path; }
+
+  .mf-media img {
+    width: 100%; height: 100%;
     object-fit: cover;
-    border-radius: var(--radius-sm);
-    filter: brightness(0.75);
+    filter: brightness(0.65);
+  }
+
+  .mf-label {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.6rem; text-align: center;
+    will-change: opacity;
+  }
+
+  .mf-time {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 4.5vw, 2.75rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .mf-place {
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--yellow);
   }
 </style>
