@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { invitan } from '$lib/partners.js';
 
   let imgEl;
   let conceptoEl;
@@ -49,15 +50,11 @@
         del MIT City Science</strong>.
       </p>
       <div class="partners-logos">
-        <div class="partner-cell">
-          <img src="https://d26q11cgz8q0ri.cloudfront.net/2025/08/21130656/gore.png" alt="Gobierno Regional del Biobío" class="partner-logo" />
-        </div>
-        <div class="partner-cell">
-          <img src="https://d26q11cgz8q0ri.cloudfront.net/2025/08/21130459/cc.png" alt="Corporación Ciudades" class="partner-logo" />
-        </div>
-        <div class="partner-cell">
-          <img src="https://d26q11cgz8q0ri.cloudfront.net/2025/08/21130506/cchc.png" alt="Cámara Chilena de la Construcción" class="partner-logo-cchc" />
-        </div>
+        {#each invitan as p}
+          <div class="partner-cell">
+            <img src={p.logo} alt={p.name} class="partner-logo" />
+          </div>
+        {/each}
         <div class="partner-cell">
           <img src="https://d26q11cgz8q0ri.cloudfront.net/2025/11/25160018/mit-media_1_white-scaled.png" alt="MIT Media Lab" class="partner-logo-mit" />
         </div>

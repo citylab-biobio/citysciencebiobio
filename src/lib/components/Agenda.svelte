@@ -8,6 +8,7 @@
       objective: 'Presentar los proyectos del CLBB y mostrar el valor del lab como plataforma para el desarrollo territorial.',
       accent: '#f5c518',
       link: 'https://docs.google.com/forms/d/e/1FAIpQLSdBp26IefYcL3pRc88K6VaPlMAjoTXSQvZfiw47PshnFvkj6g/viewform?usp=publish-editor',
+      slots: ['12:00 hrs', '15:00 hrs', '17:00 hrs'],
     },
     {
       day: 17,
@@ -16,7 +17,8 @@
       audience: 'SECPLAN, servicios públicos, jefaturas, analistas territoriales, encargados SIG e investigadores.',
       objective: 'Validar aplicaciones prácticas, funcionalidades y oportunidades de uso institucional de las plataformas.',
       accent: '#4a9eff',
-      link: 'https://docs.google.com/forms/d/e/1FAIpQLSf5KqBz11Vk9uuXZdAHam3zBRSWGTZ1VbYDKIunogJKv6tXOA/viewform?usp=publish-editor'
+      link: 'https://docs.google.com/forms/d/e/1FAIpQLSf5KqBz11Vk9uuXZdAHam3zBRSWGTZ1VbYDKIunogJKv6tXOA/viewform?usp=publish-editor',
+      slots: ['10:00 hrs', '12:00 hrs', '15:00 hrs', '17:00 hrs'],
     },
     {
       day: 18,
@@ -25,15 +27,9 @@
       audience: 'Universidades, ecosistema de innovación, comunicaciones, colegios, juntas de vecinos y organizaciones comunitarias.',
       objective: 'Fortalecer el relato público y acercar la plataforma a la ciudadanía desde la educación y participación territorial.',
       accent: '#a78bfa',
-      link: 'https://docs.google.com/forms/d/e/1FAIpQLSejBcpBZeQ2CJNifavFoJToA4FWovg6mgjcll4OjF3eO7zV4Q/viewform?usp=publish-editor'
+      link: 'https://docs.google.com/forms/d/e/1FAIpQLSejBcpBZeQ2CJNifavFoJToA4FWovg6mgjcll4OjF3eO7zV4Q/viewform?usp=publish-editor',
+      slots: ['10:00 hrs', '12:00 hrs', '15:00 hrs', '17:00 hrs'],
     }
-  ];
-
-  const slots = [
-    { group: 'Grupo 1', hour: '10:00 hrs' },
-    { group: 'Grupo 2', hour: '12:00 hrs' },
-    { group: 'Grupo 3', hour: '15:00 hrs' },
-    { group: 'Grupo 4', hour: '17:00 hrs' }
   ];
 </script>
 
@@ -64,10 +60,9 @@
             </div>
 
             <div class="slots-grid">
-              {#each slots as s}
+              {#each d.slots as hour}
                 <div class="slot">
-                  <p class="slot-label">{s.group}</p>
-                  <span class="slot-time" style="background: {d.accent}">{s.hour}</span>
+                  <span class="slot-time" style="background: {d.accent}">{hour}</span>
                 </div>
               {/each}
             </div>

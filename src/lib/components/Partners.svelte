@@ -1,28 +1,33 @@
 <script>
-  const invitan = [
-    { name: 'Gobierno Regional del Biobío', abbr: 'GORE' },
-    { name: 'Corporación Ciudades', abbr: 'CC' },
-    { name: 'Cámara Chilena de la Construcción', abbr: 'CChC' }
-  ];
+  import { onMount } from 'svelte';
+  import { invitan } from '$lib/partners.js';
+
+  let sectionEl;
+  let visible = false;
+
+  onMount(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { visible = true; observer.disconnect(); } },
+      { threshold: 0.08 }
+    );
+    observer.observe(sectionEl);
+    return () => observer.disconnect();
+  });
 
   const aliados = [
-    { name: 'Universidad de Concepción', abbr: 'UdeC' }
+    { name: 'Universidad de Concepción', logo: 'https://d26q11cgz8q0ri.cloudfront.net/2025/09/24010158/UdeC.png' },
+  ];
+
+  const patrocinio = [
+    { name: 'Ministerio de Ciencia, Tecnología,\nConocimiento e Innovación', logo: 'https://d26q11cgz8q0ri.cloudfront.net/2025/09/23232604/MIN-Ciencia.png' },
   ];
 
   const media = [
-    { name: 'CNN Chile', note: 'Media partner' },
-    { name: 'Infinita', note: 'Programa Mundo' },
-    { name: 'El Mercurio', note: 'Regiones' },
-    { name: 'Pauta', note: '' },
-    { name: 'Tele13 Radio', note: '103.3 FM' },
-    { name: 'Radio Udec', note: '' },
-    { name: 'El Sur', note: '' },
-    { name: 'Cooperativa', note: '' },
-    { name: 'La Tercera', note: '' }
+    { name: 'CNN Chile', logo: 'https://d26q11cgz8q0ri.cloudfront.net/2025/09/24051522/CNN-chile.png' },
   ];
 </script>
 
-<section id="aliados" class="section-padding">
+<section id="aliados" class="section-padding" class:visible bind:this={sectionEl}>
   <div class="container">
 
     <div class="header">
@@ -30,39 +35,68 @@
       <h2 class="section-title">Quienes hacen<br />posible el evento</h2>
     </div>
 
-    <div class="partners-layout">
+    <!-- Photo-backed logo wall -->
+    <div class="logo-wall">
 
-      <div class="partner-group">
-        <h4 class="group-label">Invitan</h4>
-        <div class="logo-row">
+      <!-- Invitan row -->
+      <div class="wall-row">
+        <span class="row-label">Invitan</span>
+        <div class="row-cells">
           {#each invitan as p}
-            <div class="logo-pill glass">
-              <span class="abbr yellow">{p.abbr}</span>
-              <span class="full-name">{p.name}</span>
+            <div class="cell">
+              {#if p.logo}
+                <img src={p.logo} alt={p.name} class="logo-img" />
+              {:else}
+                <span class="placeholder-text">{p.name}</span>
+              {/if}
             </div>
           {/each}
         </div>
       </div>
 
-      <div class="partner-group">
-        <h4 class="group-label">Aliados</h4>
-        <div class="logo-row">
+      <!-- Aliados row -->
+      <div class="wall-row">
+        <span class="row-label">Aliados</span>
+        <div class="row-cells">
           {#each aliados as p}
-            <div class="logo-pill glass">
-              <span class="abbr yellow">{p.abbr}</span>
-              <span class="full-name">{p.name}</span>
+            <div class="cell">
+              {#if p.logo}
+                <img src={p.logo} alt={p.name} class="logo-img" />
+              {:else}
+                <span class="placeholder-text">{p.name}</span>
+              {/if}
             </div>
           {/each}
         </div>
       </div>
 
-      <div class="partner-group">
-        <h4 class="group-label">Cobertura de prensa</h4>
-        <div class="media-grid">
-          {#each media as m}
-            <div class="media-tag glass">
-              <span class="media-name">{m.name}</span>
-              {#if m.note}<span class="media-note">{m.note}</span>{/if}
+      <!-- Patrocinio row -->
+      <div class="wall-row">
+        <span class="row-label">Patrocinio</span>
+        <div class="row-cells">
+          {#each patrocinio as p}
+            <div class="cell">
+              {#if p.logo}
+                <img src={p.logo} alt={p.name} class="logo-img" />
+              {:else}
+                <span class="placeholder-text">{p.name}</span>
+              {/if}
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <!-- Media row -->
+      <div class="wall-row">
+        <span class="row-label">Media</span>
+        <div class="row-cells">
+          {#each media as p}
+            <div class="cell">
+              {#if p.logo}
+                <img src={p.logo} alt={p.name} class="logo-img" />
+              {:else}
+                <span class="placeholder-text">{p.name}</span>
+              {/if}
             </div>
           {/each}
         </div>
@@ -97,84 +131,135 @@
 </section>
 
 <style>
+  /* ── Section background ──────────────────────── */
+  section {
+    position: relative;
+  }
+
+  section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      url('https://d26q11cgz8q0ri.cloudfront.net/2026/06/04110417/dji_export_20250723_183718_1753310238264_sphere_screenshot-scaled.jpg')
+      center / cover no-repeat fixed;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  section.visible::before {
+    opacity: 1;
+  }
+
+  /* dark overlay on top of the photo */
+  section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 10, 0.82) 0%,
+      rgba(10, 10, 10, 0.72) 50%,
+      rgba(10, 10, 10, 0.88) 100%
+    );
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container, .footer {
+    position: relative;
+    z-index: 1;
+  }
+
   .header {
     margin-bottom: 3.5rem;
   }
 
-  .partners-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+  /* ── Logo wall ───────────────────────────────── */
+  .logo-wall {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
     margin-bottom: 5rem;
   }
 
-  .group-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.35);
-    margin-bottom: 1rem;
-  }
-
-  .logo-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .logo-pill {
+  /* ── Rows ────────────────────────────────────── */
+  .wall-row {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.65rem 1.1rem;
-    border-radius: var(--radius-full);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .abbr {
-    font-size: 1rem;
+  .wall-row:last-child {
+    border-bottom: none;
+  }
+
+  .row-label {
+    flex-shrink: 0;
+    width: 7rem;
+    padding: 0 1.5rem;
+    font-size: 0.68rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .full-name {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.65);
-    font-weight: 500;
-  }
-
-  .media-grid {
+  .row-cells {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
+    flex: 1;
   }
 
-  .media-tag {
+  /* ── Cells ───────────────────────────────────── */
+  .cell {
+    flex: 1;
     display: flex;
-    flex-direction: column;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-sm);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.75rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
     transition: background 0.2s;
   }
 
-  .media-tag:hover {
-    background: var(--glass-bg-hover);
+  .cell:last-child {
+    border-right: none;
   }
 
-  .media-name {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.8);
+  .cell:hover {
+    background: rgba(255, 255, 255, 0.05);
   }
 
-  .media-note {
+  /* ── Logos & placeholders ────────────────────── */
+  .logo-img {
+    max-width: 140px;
+    max-height: 52px;
+    width: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.75;
+    transition: opacity 0.2s;
+  }
+
+  .cell:hover .logo-img {
+    opacity: 1;
+  }
+
+  .placeholder-text {
     font-size: 0.72rem;
-    color: var(--yellow);
-    font-weight: 500;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.2);
+    text-align: center;
+    line-height: 1.5;
+    white-space: pre-line;
   }
 
-  /* Footer */
+  /* ── Footer ──────────────────────────────────── */
   .footer {
-    border-top: 1px solid rgba(255,255,255,0.07);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
     padding-top: 3rem;
   }
 
@@ -200,13 +285,13 @@
   }
 
   .fl-sep {
-    color: rgba(255,255,255,0.2);
+    color: rgba(255, 255, 255, 0.2);
     font-size: 1.2rem;
   }
 
   .footer-tagline {
     font-size: 0.85rem;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255, 255, 255, 0.4);
     max-width: 320px;
     line-height: 1.5;
   }
@@ -227,13 +312,22 @@
 
   .footer-venue {
     font-size: 0.82rem;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255, 255, 255, 0.4);
   }
 
   .footer-bar {
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding: 1.25rem 0;
     font-size: 0.78rem;
-    color: rgba(255,255,255,0.25);
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  /* ── Responsive ──────────────────────────────── */
+  @media (max-width: 640px) {
+    .row-label { display: none; }
+
+    .cell { padding: 1.5rem 1rem; }
+
+    .logo-img { max-width: 100px; max-height: 40px; }
   }
 </style>
