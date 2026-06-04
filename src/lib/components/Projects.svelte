@@ -226,7 +226,7 @@
             </div>
             <h3 class="card-name" style="color:{p.accent}">{p.name}</h3>
             <p class="card-desc">{p.description}</p>
-            <img src={p.logo} alt={p.name} class="card-logo-inline" draggable="false" />
+            <img src={p.logo} alt="" class="card-logo-inline" draggable="false" />
             <div class="accent-line" style="background:{p.accent}"></div>
           </div>
         </div>
