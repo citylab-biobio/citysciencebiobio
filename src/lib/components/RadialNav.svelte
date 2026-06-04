@@ -36,7 +36,7 @@
 </script>
 
 {#if open}
-  <div class="backdrop" role="presentation" on:click={() => (open = false)}></div>
+  <div class="backdrop" role="none" on:click={() => (open = false)}></div>
 {/if}
 
 <div class="radial-nav">
