@@ -196,12 +196,7 @@
     text-align: center;
   }
 
-  .slot-label {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.5);
-  }
-
-  .slot-time {
+.slot-time {
     display: inline-block;
     padding: 0.25rem 0.65rem;
     border-radius: 6px;
