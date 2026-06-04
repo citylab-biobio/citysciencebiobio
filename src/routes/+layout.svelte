@@ -17,7 +17,7 @@
     }
     requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
+    return () => { if (lenis) lenis.destroy(); };
   });
 </script>
 
