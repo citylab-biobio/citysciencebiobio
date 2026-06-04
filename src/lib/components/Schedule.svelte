@@ -414,12 +414,6 @@
     color: #fff;
   }
 
-  .mf-place {
-    font-size: 0.82rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--yellow);
-  }
 
   .title-close {
     height: clamp(80px, 5vw, 180px);
