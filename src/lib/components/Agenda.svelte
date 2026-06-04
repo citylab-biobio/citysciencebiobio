@@ -31,6 +31,9 @@
       slots: ['10:00 hrs', '12:00 hrs', '15:00 hrs', '17:00 hrs'],
     }
   ];
+
+  // Mobile: which day's card is currently shown (tab selector).
+  let activeDay = 0;
 </script>
 
 <section id="agenda" class="section-padding" style="background: var(--bg)">
@@ -41,9 +44,23 @@
       <h2 class="section-title">City Science Biobío Expo</h2>
     </div>
 
+    <!-- Mobile date selector -->
+    <div class="day-tabs">
+      {#each days as d, i (d.day)}
+        <button
+          class="day-tab"
+          class:active={i === activeDay}
+          style="--accent: {d.accent}"
+          on:click={() => (activeDay = i)}
+        >
+          {d.weekday} {d.day}
+        </button>
+      {/each}
+    </div>
+
     <div class="days-grid">
-      {#each days as d (d.day)}
-        <div class="day-card glass" style="--accent: {d.accent}">
+      {#each days as d, i (d.day)}
+        <div class="day-card glass" class:is-active={i === activeDay} style="--accent: {d.accent}">
           <div class="day-header">
             <div class="day-num" style="color: {d.accent}">{d.weekday} {d.day}</div>
             <h3 class="day-theme">{d.theme}</h3>
@@ -85,6 +102,11 @@
 <style>
   .header {
     margin-bottom: 3rem;
+  }
+
+  /* Mobile date selector — hidden on desktop */
+  .day-tabs {
+    display: none;
   }
 
   .days-grid {
@@ -220,5 +242,47 @@
 
   .day-card:hover .day-accent-line {
     opacity: 1;
+  }
+
+  /* ── Mobile: date tabs reveal one card at a time ──────────────────────── */
+  @media (max-width: 679px) {
+    .day-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .day-tab {
+      flex: 1;
+      min-width: max-content;
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      font-family: var(--font-heading);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .day-tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0a0a0a;
+    }
+
+    /* Show only the selected day's card */
+    .days-grid .day-card {
+      display: none;
+    }
+
+    .days-grid .day-card.is-active {
+      display: flex;
+    }
   }
 </style>

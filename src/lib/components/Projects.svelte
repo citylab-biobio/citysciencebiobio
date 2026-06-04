@@ -68,7 +68,9 @@
   ];
 
   const N = projects.length;          // 7
-  const SCROLL_PER_CARD = 1300;        // px of scroll per card transition
+  // px of scroll per card transition — longer on mobile so each card dwells
+  // a bit longer before the next slides in.
+  let scrollPerCard = 1300;
 
   // Stack direction: top-left
   const STACK_X     = -22;   // px left per depth level
@@ -170,6 +172,10 @@
 
   // ─── RAF-based scroll tracker (Lenis-safe) ───────────────────────────────
   onMount(() => {
+    const setLen = () => { scrollPerCard = window.innerWidth <= 767 ? 1700 : 1300; };
+    setLen();
+    window.addEventListener('resize', setLen);
+
     let rafId;
     function tick() {
       if (section) {
@@ -182,14 +188,17 @@
       rafId = requestAnimationFrame(tick);
     }
     rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', setLen);
+    };
   });
 </script>
 
 <section
   id="proyectos"
   bind:this={section}
-  style="height: calc(100vh + {(N - 1) * SCROLL_PER_CARD}px); background: var(--bg);"
+  style="height: calc(100vh + {(N - 1) * scrollPerCard}px); background: var(--bg);"
 >
   <div class="sticky-wrap">
 
@@ -217,6 +226,7 @@
             </div>
             <h3 class="card-name" style="color:{p.accent}">{p.name}</h3>
             <p class="card-desc">{p.description}</p>
+            <img src={p.logo} alt={p.name} class="card-logo-inline" draggable="false" />
             <div class="accent-line" style="background:{p.accent}"></div>
           </div>
         </div>
@@ -360,6 +370,19 @@
   }
 
 
+  /* Inline logo (under the text) — mobile only */
+  .card-logo-inline {
+    display: none;
+    height: 34px;
+    width: auto;
+    max-width: 55%;
+    object-fit: contain;
+    object-position: left center;
+    margin-top: 0.5rem;
+    user-select: none;
+    pointer-events: none;
+  }
+
   .card-loc {
     font-size: 0.62rem;
     font-weight: 600;
@@ -451,6 +474,13 @@
   }
 
   /* ── Mobile ───────────────────────────────────────────────────────────── */
+  @media (max-width: 767px) {
+    /* Lift the section up — trim the dead space above "Proyectos" */
+    .proj-header {
+      padding: 2.5rem 1.5rem 0.75rem;
+    }
+  }
+
   @media (max-width: 600px) {
     .card {
       grid-template-columns: 1fr;
@@ -467,6 +497,13 @@
         rgba(10, 10, 10, 0.7) 100%
       );
     }
+
+    /* Logo moves out of the image, under the card text */
+    .card-logo { display: none; }
+    .card-logo-inline { display: block; }
+
+    /* Trim the description so the logo fits */
+    .card-desc { -webkit-line-clamp: 5; }
 
     .hint { display: none; }
   }

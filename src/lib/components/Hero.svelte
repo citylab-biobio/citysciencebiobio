@@ -296,4 +296,37 @@
     0%, 100% { transform: translateY(0); }
     50%       { transform: translateY(5px); }
   }
+
+  /* ── Mobile ──────────────────────────────────────── */
+  @media (max-width: 767px) {
+    /* Hide the decorative barra SVG entirely */
+    .barra-wrap { display: none; }
+
+    /* Center everything */
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 3rem;
+    }
+
+    .eyebrow { margin-bottom: 1.75rem; }
+
+    /* Logo: bigger + centered */
+    .title {
+      height: clamp(120px, 34vw, 200px);
+      object-position: center center;
+      margin: 0 auto 1.75rem;
+    }
+
+    .tagline {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .event-info {
+      align-items: center;
+    }
+  }
 </style>

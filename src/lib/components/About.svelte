@@ -51,7 +51,7 @@
       </p>
       <div class="partners-logos">
         {#each invitan as p}
-          <div class="partner-cell">
+          <div class="partner-cell" class:large={p.large}>
             <img src={p.logo} alt={p.name} class="partner-logo" />
           </div>
         {/each}
@@ -156,30 +156,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    /* uniform bounding box — every logo fits within this, regardless of shape */
+    max-width: 120px;
+    height: 52px;
   }
 
-  .partner-logo {
+  .partner-cell img {
     width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+
+  .partner-cell.large {
+    max-width: 160px;
     height: 70px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
-  }
-
-  .partner-logo-cchc {
-    width: 100%;
-    height: 36px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.90;
-  }
-
-  .partner-logo-mit {
-    width: 100%;
-    height: 36px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.90;
   }
 
   /* Full-bleed parallax */
@@ -322,5 +314,20 @@
   .concepto-text strong {
     color: #fff;
     font-weight: 600;
+  }
+
+  /* ── Mobile ──────────────────────────────────────── */
+  @media (max-width: 767px) {
+    /* Partner logos stack vertically, centered */
+    .partners-logos {
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .partner-cell {
+      max-width: 160px;
+      height: 52px;
+    }
   }
 </style>

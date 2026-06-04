@@ -6,7 +6,23 @@
   const VENUE_IMG = 'https://d26q11cgz8q0ri.cloudfront.net/2026/06/03222713/bibliotecaudec-scaled.png';
 
   // Total px of scroll for the pinned section — matches Projects' SCROLL_PER_CARD pattern.
-  const SCROLL_PX = 3200;
+  // Longer on mobile so the masterclass dwells a bit before releasing.
+  let SCROLL_PX = 3200;
+
+  // Masterclass copy — single source, reused by the desktop overlay and the
+  // mobile (scroll-over-video) block.
+  const masterclass = {
+    caption: '#Masterclass',
+    title: 'Modelando el futuro de la movilidad',
+    sub: 'Naroa Coretti - Research Scientist MIT Media Lab',
+    paras: [
+      '¿Qué pasaría si pudiéramos probar el futuro de nuestras ciudades antes de construirlo? Naroa Coretti, investigadora científica de MIT City Science explorará cómo la simulación avanzada y los modelos basados en datos están transformando la forma en que entendemos, diseñamos y gestionamos los sistemas de movilidad del futuro.',
+      'En City Science Biobío presentará cómo la simulación de ciudad permite anticipar decisiones urbanas y diseñar territorios más sostenibles.'
+    ],
+    meta: '16 Jun · 2026 — Concepción, Chile',
+    link: 'https://docs.google.com/forms/d/e/1FAIpQLSeZebu6M_XhaHywPAalQmkijtbEwp1G0YHiBepzT269Yy48UA/viewform?usp=publish-editor',
+    linkLabel: 'Inscribirse en la Masterclass →'
+  };
 
   let sectionEl, videoEl, mountainEl;
   let footerEls = [];
@@ -27,6 +43,10 @@
   onMount(() => {
     // Autoplay immediately — video is background from frame 0.
     videoEl?.play().catch(() => {});
+
+    const setLen = () => { SCROLL_PX = window.innerWidth <= 767 ? 4200 : 3200; };
+    setLen();
+    window.addEventListener('resize', setLen);
 
     let rafId;
 
@@ -85,7 +105,10 @@
     }
 
     rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', setLen);
+    };
   });
 </script>
 
@@ -109,25 +132,20 @@
       ></video>
       <div class="media-darken" style="background: rgba(0,0,0,{darken});"></div>
 
-      <!-- Overlay: blooms in softly, then text staggers -->
+      <!-- Overlay: blooms in softly, then text staggers (desktop) -->
       <div class="media-overlay" style="opacity:{overlayOp}; backdrop-filter:blur({overlayBlur}px); -webkit-backdrop-filter:blur({overlayBlur}px);">
         <span class="ov-caption" style="opacity:{elR[0]}; transform:translateY({(1-elR[0])*22}px);">
-          #Masterclass
+          {masterclass.caption}
         </span>
         <div class="ov-content">
-          <h3 class="ov-title yellow" style="opacity:{elR[1]}; transform:translateY({(1-elR[1])*22}px);">Modelando el futuro de la movilidad</h3>
-          <p class="ov-sub" style="opacity:{elR[2]}; transform:translateY({(1-elR[2])*18}px);">Naroa Coretti - Research Scientist MIT Media Lab</p>
-          <p class="ov-text" style="opacity:{elR[3]}; transform:translateY({(1-elR[3])*16}px);">
-            ¿Qué pasaría si pudiéramos probar el futuro de nuestras ciudades antes de construirlo?
-            Naroa Coretti, investigadora científica de MIT City Science explorará cómo la simulación avanzada y los modelos basados en datos están transformando la forma en que entendemos, diseñamos y gestionamos los sistemas de movilidad del futuro.
-          </p>
-          <p class="ov-text" style="opacity:{elR[4]}; transform:translateY({(1-elR[4])*16}px);">
-            En City Science Biobío presentará cómo la simulación de ciudad permite anticipar
-            decisiones urbanas y diseñar territorios más sostenibles.
-          </p>
-          <p class="ov-meta" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);">16 Jun · 2026 — Concepción, Chile</p>
-          <a class="ov-link" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);" href="ttps://docs.google.com/forms/d/e/1FAIpQLSeZebu6M_XhaHywPAalQmkijtbEwp1G0YHiBepzT269Yy48UA/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">
-            Inscribirse en la Masterclass →
+          <h3 class="ov-title yellow" style="opacity:{elR[1]}; transform:translateY({(1-elR[1])*22}px);">{masterclass.title}</h3>
+          <p class="ov-sub" style="opacity:{elR[2]}; transform:translateY({(1-elR[2])*18}px);">{masterclass.sub}</p>
+          {#each masterclass.paras as para, i}
+            <p class="ov-text" style="opacity:{elR[3 + i]}; transform:translateY({(1-elR[3 + i])*16}px);">{para}</p>
+          {/each}
+          <p class="ov-meta" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);">{masterclass.meta}</p>
+          <a class="ov-link" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);" href={masterclass.link} target="_blank" rel="noopener noreferrer">
+            {masterclass.linkLabel}
           </a>
         </div>
       </div>
@@ -150,9 +168,11 @@
     </p>
   </div>
 
+  <!-- divider
   <div class="fc-divider">
     <AnimatedSvg preset="scheduleDivider" />
   </div>
+  -->
 </div>
 
 <!-- Logo -->
@@ -369,6 +389,11 @@
     width: 100%;
     z-index: 2;
     pointer-events: none;
+  }
+
+  /* Hide the decorative trama over the venue image on mobile */
+  @media (max-width: 767px) {
+    .mf-trama { display: none; }
   }
 
   /* Layer 3 — label */

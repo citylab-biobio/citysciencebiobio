@@ -40,7 +40,7 @@
 
       <!-- Invitan row -->
       <div class="wall-row">
-        <span class="row-label">Invitan</span>
+        <span class="row-label">Invita</span>
         <div class="row-cells">
           {#each invitan as p}
             <div class="cell">
@@ -72,7 +72,7 @@
 
       <!-- Patrocinio row -->
       <div class="wall-row">
-        <span class="row-label">Patrocinio</span>
+        <span class="row-label">Patrocina</span>
         <div class="row-cells">
           {#each patrocinio as p}
             <div class="cell">
@@ -88,7 +88,7 @@
 
       <!-- Media row -->
       <div class="wall-row">
-        <span class="row-label">Media</span>
+        <span class="row-label">Media partner</span>
         <div class="row-cells">
           {#each media as p}
             <div class="cell">
