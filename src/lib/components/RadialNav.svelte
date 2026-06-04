@@ -5,7 +5,6 @@
 
     { href: '#aliados',    label: 'Aliados'      },
     { href: '#agenda',   label: 'Agenda'    },
-    { href: '#programa', label: 'Programa'   },
     { href: '#programa',  label: 'Masterclass' },
     { href: '#proyectos',    label: 'proyectos'      },
     { href: '#quienes',   label: 'Nosotros'     },

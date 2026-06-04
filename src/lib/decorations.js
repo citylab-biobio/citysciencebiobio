@@ -31,5 +31,13 @@ export const decorations = {
     direction: 'ttb',
     width: '170px',
     prerender: 0.15
+  },
+  // Trama header — reveals left→right as the closing shot enters the viewport.
+  tramaEncabezado: {
+    src: '/assets/trama_encabezado.svg',
+    direction: 'ltr',
+    width: '100%',
+    prerender: 0.1,
+    reveal: 0.5
   }
 };

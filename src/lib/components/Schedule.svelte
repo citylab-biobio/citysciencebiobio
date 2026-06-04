@@ -136,11 +136,7 @@
   </div>
 </section>
 
-<!-- Logo -->
-<div class="footer-logo">
-  <AnimatedSvg preset="clbbLogo" />
-</div>
-
+<section ide="cta">
 <!-- Quote + credits -->
 <div class="footer-content">
   <div
@@ -159,8 +155,14 @@
   </div>
 </div>
 
+<!-- Logo -->
+<div class="footer-logo">
+  <AnimatedSvg preset="clbbLogo" />
+</div>
+
 <!-- Closing shot -->
 <div class="mountain-footer" bind:this={mountainEl}>
+  <AnimatedSvg preset="tramaEncabezado" override={{ width: '100%' }} />
   <div class="mf-media" style="clip-path: inset({mountainClip}% 0 0 0);">
     <img src={VENUE_IMG} alt="Biblioteca Central, Universidad de Concepción" />
   </div>
@@ -170,6 +172,8 @@
     <span class="mf-time">Biblioteca UdeC</span>
     </div>
 </div>
+
+</section>
 
 <style>
   .launch {
@@ -322,6 +326,7 @@
 
   /* ── Closing shot ── */
   .mountain-footer { position: relative; height: 60vh; overflow: hidden; }
+
 
   .mf-media {
     position: absolute; inset: 0;
