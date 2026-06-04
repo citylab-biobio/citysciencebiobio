@@ -37,7 +37,7 @@
   <div class="container">
 
     <div class="header">
-      <p class="section-label">● Visita guiadas</p>
+      <p class="section-label">● Visita guiadas - Cupos limitados por día</p>
       <h2 class="section-title">City Science Biobío Expo</h2>
     </div>
 

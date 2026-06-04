@@ -17,7 +17,7 @@
   let overlayOp = 0, overlayBlur = 0;
   let elR = [0, 0, 0, 0, 0, 0]; // caption, title, sub, text1, text2, meta+link
   let footerReveals = [0, 0];
-  let mountainClip = 100, mountainLabel = 0;
+  let mountainFade = 0, mountainLabel = 0;
 
   const clamp  = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
   const lerp   = (a, b, t) => a + (b - a) * t;
@@ -73,12 +73,12 @@
         return easeOutCubic(clamp(1 - r.top / (window.innerHeight * 0.85)));
       });
 
-      // Closing shot wipes up.
+      // Closing shot: venue image fades in first, label follows.
       if (mountainEl) {
         const r  = mountainEl.getBoundingClientRect();
         const pm = easeOutCubic(clamp(1 - r.top / (window.innerHeight * 0.8)));
-        mountainClip  = (1 - pm) * 100;
-        mountainLabel = clamp((pm - 0.4) / 0.4);
+        mountainFade  = pm;                        // image opacity 0 → 1
+        mountainLabel = clamp((pm - 0.45) / 0.4);  // text appears after image
       }
 
       rafId = requestAnimationFrame(tick);
@@ -136,7 +136,7 @@
   </div>
 </section>
 
-<section ide="cta">
+<section id="cta">
 <!-- Quote + credits -->
 <div class="footer-content">
   <div
@@ -162,10 +162,17 @@
 
 <!-- Closing shot -->
 <div class="mountain-footer" bind:this={mountainEl}>
-  <AnimatedSvg preset="tramaEncabezado" override={{ width: '100%' }} />
-  <div class="mf-media" style="clip-path: inset({mountainClip}% 0 0 0);">
+  <!-- 1. Venue image fades in (no parallax / no wipe) -->
+  <div class="mf-media" style="opacity:{mountainFade};">
     <img src={VENUE_IMG} alt="Biblioteca Central, Universidad de Concepción" />
   </div>
+
+  <!-- 2. Decorative pattern draws in from the sides on scroll, on top -->
+  <div class="mf-trama">
+    <AnimatedSvg preset="tramaEncabezado" override={{ width: '100%', prerender: 0 }} />
+  </div>
+
+  <!-- 3. Label -->
   <div class="mf-label" style="opacity:{mountainLabel};">
     <span class="mf-time">Del 16 al 18 de junio</span>
     <img src="https://d26q11cgz8q0ri.cloudfront.net/2026/05/28152803/logo-scaled.png" alt="City Science Biobío 2026" class="title-close" />
@@ -293,7 +300,7 @@
   .footer-logo {
     display: flex;
     justify-content: center;
-    padding: 8rem 1.5rem 0;
+    padding: 2rem 1.5rem 0;
   }
 
   /* ── Footer text ── */
@@ -327,23 +334,24 @@
   /* ── Closing shot ── */
   .mountain-footer { position: relative; height: 60vh; overflow: hidden; }
 
-
+  /* Layer 1 — venue image, fades in */
   .mf-media {
     position: absolute; inset: 0;
-    will-change: clip-path;
-    /* Blend top and bottom edges into the background — 22% fade on each side */
+    z-index: 1;
+    will-change: opacity;
+    /* Blend top and bottom edges into the background */
     mask-image: linear-gradient(
       to bottom,
       transparent 0%,
-      black 50%,
-      black 50%,
+      black 18%,
+      black 82%,
       transparent 100%
     );
     -webkit-mask-image: -webkit-linear-gradient(
       top,
       transparent 0%,
-      black 50%,
-      black 50%,
+      black 18%,
+      black 82%,
       transparent 100%
     );
   }
@@ -351,11 +359,22 @@
   .mf-media img {
     width: 100%; height: 100%;
     object-fit: cover;
-    filter: brightness(0.65);
+    filter: brightness(0.6);
   }
 
+  /* Layer 2 — decorative pattern, revealed from the sides */
+  .mf-trama {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Layer 3 — label */
   .mf-label {
     position: absolute; inset: 0;
+    z-index: 3;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 0.6rem; text-align: center;
