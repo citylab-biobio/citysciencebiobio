@@ -105,8 +105,17 @@
     fetch('/assets/barra.svg')
       .then(r => r.text())
       .then(markup => {
-        barWrap.innerHTML = markup;
-        const svgEl = barWrap.querySelector('svg');
+        const doc = new DOMParser().parseFromString(markup, 'image/svg+xml');
+        const parsed = doc.querySelector('svg');
+        if (!parsed) return;
+        parsed.querySelectorAll('script').forEach(el => el.remove());
+        parsed.querySelectorAll('*').forEach(el => {
+          [...el.attributes].forEach(attr => {
+            if (attr.name.startsWith('on')) el.removeAttribute(attr.name);
+          });
+        });
+        const svgEl = document.importNode(parsed, true);
+        barWrap.appendChild(svgEl);
         Object.assign(svgEl.style, {
           display: 'block', width: '100%', height: 'auto',
           transform: 'rotate(180deg)',
