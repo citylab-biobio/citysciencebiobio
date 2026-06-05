@@ -1,24 +1,21 @@
 /* ── Chalet ── */
 @font-face {
   font-family: 'Chalet';
-  src: url('https://clbb.marca.s3.us-east-1.amazonaws.com/fonts/Chalet%20New%20York%20Nineteen%20Seventy.otf') format('opentype'),
-       url('/Chalet New York Nineteen Seventy.otf') format('opentype');
+  src: url('https://assets.citylabbiobio.cl/fonts/Chalet%20New%20York%20Nineteen%20Seventy.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Chalet';
-  src: url('https://clbb.marca.s3.us-east-1.amazonaws.com/fonts/Chalet%20Paris%20Nineteen%20Seventy.otf') format('opentype'),
-       url('/Chalet Paris Nineteen Seventy.otf') format('opentype');
+  src: url('https://assets.citylabbiobio.cl/fonts/Chalet%20Paris%20Nineteen%20Seventy.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Chalet';
-  src: url('https://clbb.marca.s3.us-east-1.amazonaws.com/fonts/Chalet%20London%20Nineteen%20Seventy.otf') format('opentype'),
-       url('/Chalet London Nineteen Seventy.otf') format('opentype');
+  src: url('https://assets.citylabbiobio.cl/fonts/Chalet%20London%20Nineteen%20Seventy.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -27,40 +24,35 @@
 /* ── Dobra Slab ── */
 @font-face {
   font-family: 'DobraSlab';
-  src: url('https://clbb.marca.s3.us-east-1.amazonaws.com/fonts/DobraSlab-Book.ttf') format('truetype'),
-       url('/DobraSlab-Book.ttf') format('truetype');
+  src: url('https://assets.citylabbiobio.cl/fonts/DobraSlab-Book.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'DobraSlab';
-  src: url('https://clbb.marca.s3.us-east-1.amazonaws.com/fonts/DobraSlab-BookItalic.ttf') format('truetype'),
-       url('/DobraSlab-BookItalic.ttf') format('truetype');
+  src: url('https://assets.citylabbiobio.cl/fonts/DobraSlab-BookItalic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'DobraSlab';
-  src: url('https://clbb.marca.s3.us-east-1.amazonaws.com/fonts/DobraSlab-Medium.ttf') format('truetype'),
-       url('/DobraSlab-Medium.ttf') format('truetype');
+  src: url('https://assets.citylabbiobio.cl/fonts/DobraSlab-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'DobraSlab';
-  src: url('https://clbb.marca.s3.us-east-1.amazonaws.com/fonts/DobraSlab-MediumItalic.ttf') format('truetype'),
-       url('/DobraSlab-MediumItalic.ttf') format('truetype');
+  src: url('https://assets.citylabbiobio.cl/fonts/DobraSlab-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'DobraSlab';
-  src: url('https://clbb.marca.s3.us-east-1.amazonaws.com/fonts/DobraSlab-Bold.ttf') format('truetype'),
-       url('/DobraSlab-Bold.ttf') format('truetype');
+  src: url('https://assets.citylabbiobio.cl/fonts/DobraSlab-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
