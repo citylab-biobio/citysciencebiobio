@@ -71,6 +71,13 @@
       aria-pressed={$locale === 'en'}
       on:click={() => setLocale('en')}
     >EN</button>
+    <span class="lang-sep">|</span>
+    <button
+      class="lang-opt"
+      class:active={$locale === 'de'}
+      aria-pressed={$locale === 'de'}
+      on:click={() => setLocale('de')}
+      >DE</button>
   </div>
 
   <button
@@ -200,8 +207,24 @@
     transition: color 0.2s;
   }
 
-  .lang-opt:hover { color: #fff; }
-  .lang-opt.active { color: var(--yellow); }
+  /* Active = current language: muted, non-clickable feel */
+  .lang-opt.active {
+    color: rgba(255, 255, 255, 0.3);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* Inactive = the language you can switch to: yellow pill */
+  .lang-opt:not(.active) {
+    background: #ffcc05;
+    color: #0a0a0a;
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+
+  .lang-opt:not(.active):hover {
+    background: #ffe047;
+  }
 
   .lang-sep {
     color: rgba(255, 255, 255, 0.25);
