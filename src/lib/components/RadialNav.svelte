@@ -1,14 +1,18 @@
 <script>
+  import { getContext } from 'svelte';
+
+  const { t, locale, setLocale } = getContext('i18n');
+
   let open = false;
 
+  // `key` indexes into $t.nav for the (reactive) label; geometry is static.
   const sections = [
-
-    { href: '#aliados',    label: 'Aliados'      },
-    { href: '#agenda',   label: 'Agenda'    },
-    { href: '#programa',  label: 'Masterclass' },
-    { href: '#proyectos',    label: 'proyectos'      },
-    { href: '#quienes',   label: 'Nosotros'     },
-    { href: "#inicio", label: 'Inicio'      },
+    { href: '#aliados',   key: 'aliados'     },
+    { href: '#agenda',    key: 'agenda'      },
+    { href: '#programa',  key: 'masterclass' },
+    { href: '#proyectos', key: 'proyectos'   },
+    { href: '#quienes',   key: 'nosotros'    },
+    { href: '#inicio',    key: 'inicio'      },
   ];
 
   const R = 158;
@@ -46,16 +50,33 @@
         href={it.href}
         class="item-link"
         style="transform: rotate({it.rot}deg)"
-        aria-label={it.label}
+        aria-label={$t.nav[it.key]}
         on:click|preventDefault={() => goto(it.href)}
-      >{it.label}</a>
+      >{$t.nav[it.key]}</a>
     </div>
   {/each}
+
+  <!-- Language toggle: sits between the trigger and the section items -->
+  <div class="lang-toggle" class:visible={open} role="group" aria-label={$t.nav.langAria}>
+    <button
+      class="lang-opt"
+      class:active={$locale === 'es'}
+      aria-pressed={$locale === 'es'}
+      on:click={() => setLocale('es')}
+    >ES</button>
+    <span class="lang-sep">|</span>
+    <button
+      class="lang-opt"
+      class:active={$locale === 'en'}
+      aria-pressed={$locale === 'en'}
+      on:click={() => setLocale('en')}
+    >EN</button>
+  </div>
 
   <button
     class="trigger"
     class:open
-    aria-label="Navegación"
+    aria-label={$t.nav.menuAria}
     on:click={() => (open = !open)}
   >
     <span></span>
@@ -135,6 +156,57 @@
   .trigger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .trigger.open span:nth-child(2) { opacity: 0; width: 0; }
   .trigger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── Language toggle ─────────────────────────────── */
+  /* Pinned just above the trigger; fades/slides in with the menu. */
+  .lang-toggle {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: var(--radius-full);
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    /* closed: collapsed onto the trigger */
+    transform: translate(-50%, 14px) scale(0);
+    transform-origin: bottom center;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.22s ease;
+  }
+
+  .lang-toggle.visible {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .lang-opt {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.55);
+    transition: color 0.2s;
+  }
+
+  .lang-opt:hover { color: #fff; }
+  .lang-opt.active { color: var(--yellow); }
+
+  .lang-sep {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 0.7rem;
+  }
 
   /* ── Items ───────────────────────────────────────── */
   .item {
