@@ -260,11 +260,10 @@
 
   /* ── Header ───────────────────────────────────────────────────────────── */
   .proj-header {
-    padding: 5.5rem 2rem 0.5rem;
+    padding: 5.5rem 2rem;
     text-align: center;
     z-index: 10;
     pointer-events: none;
-    background: var(--bg);
   }
 
   .proj-title {
