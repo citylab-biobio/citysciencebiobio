@@ -124,8 +124,8 @@ export const dict = {
   en: {
     meta: {
       description:
-        'City Science Biobío 2026 — Urban technology with impact. City Lab Biobío presents 4 years of innovation in the city. Concepción, June 15–18.',
-      ogDescription: 'The future of Biobío, seen through city science.'
+        'City Science Biobío 2026 — Urban technology with real-world impact. City Lab Biobío showcases four years of urban innovation. Concepción, June 15–18.',
+      ogDescription: 'Shaping the future of Biobío through city science.'
     },
 
     nav: {
@@ -140,97 +140,97 @@ export const dict = {
     },
 
     hero: {
-      pill: 'Urban technology with impact',
-      leadHtml: 'City Lab Biobío presents <strong>four years of innovation</strong> in the city',
+      pill: 'Urban technology with real-world impact',
+      leadHtml: 'City Lab Biobío showcases <strong>four years of urban innovation</strong>',
       dates: 'June 15–18, 2026',
       venue: 'Central Library, Universidad de Concepción',
-      scrollHint: 'Scroll to explore our event'
+      scrollHint: 'Scroll to explore'
     },
 
     about: {
       pill: 'Who We Are',
       leadHtml:
-        'Our main goal is the <strong>modeling of scenarios to anticipate the impact of urban decisions</strong>, as a way to support city planning with data science.',
+        'Our core mission is <strong>scenario modeling to anticipate the consequences of urban decisions</strong> — putting data science to work in support of smarter, more equitable city planning.',
       transferHtml:
-        'To do so, it draws on <strong>the technology and knowledge transfer of MIT City Science</strong>.',
-      imgAlt: 'Urban modeling with data science',
+        'We pursue this through <strong>the technology and expertise developed at MIT City Science</strong>.',
+      imgAlt: 'Urban data science in action',
       place: 'Concepción, Chile — June 2026',
       headlineHtml: 'Urban technology<br/>with impact',
       conceptoText:
-        'The future of Biobío, seen through city science. Today we have more data, more tools and world-class installed capacity to build solutions to the urban challenges of the coming generations.',
+        'The future of Biobío, reimagined through city science. We now have more data, sharper tools, and world-class expertise to address the urban challenges that will define the next generation.',
       expansionHtml:
-        'At <strong>City Science Biobío</strong> we will mark the beginning of the lab\'s expansion and its technologies toward other cities across the country and South America.'
+        '<strong>City Science Biobío</strong> marks the beginning of a new chapter — as the lab and its platforms expand to cities across Chile and South America.'
     },
 
     projects: {
       title: 'Projects',
       intro:
-        'We invite you to discover the technologies developed for city science at the southern end of the world',
+        'Explore the technologies we have built for urban science at the southern tip of the world',
       descriptions: [
-        'Through a model built with thousands of LEGO pieces, this tool turns the conversation about the future of the city into a tangible, playful and collective experience for everyone. An invitation to imagine, question and understand the real impact that future urban projects will have on everyday life along the Costanera waterfront in Concepción.',
-        'In partnership with Waze, we developed a web viewer that helps understand patterns of congestion and traffic accidents across different cities in Chile. A platform that turns real-time data into a new way of understanding mobility, inviting academics and decision-makers to investigate and explore how mobility can be transformed through simple decisions connected to a dynamic territory.',
-        'Together with the Port of Talcahuano, we built a digital platform that lets its technical teams evaluate existing urban projects and imagine new scenarios using static and real-time data, to make the future visible before building it.',
-        'In partnership with Deep-Hub and Imagine-IT, we created an emergency viewer that monitors critical infrastructure and populations potentially at risk in real time during disaster situations. A platform designed to act and make data-driven decisions capable of changing the outcome in an emergency.',
-        'We developed a digital table that lets us gather around the data to analyze, discuss and visualize more than 1,500 territorial indicators in an integrated way. A tool designed to foster encounters between academia, decision-makers and communities, turning complex information into conversations to improve our city.',
-        'We designed the largest up-to-date catalog of territorial data in the Biobío region — a free, open web platform so that academia, students and technical teams from the public and private sectors can access, simply and clearly, the data they need to understand the territory, question it and project better decisions for its future.',
-        'We created a digital platform focused on the design of public spaces that turns citizen participation into a collective and innovative experience. Powered by artificial intelligence, this creative research tool turns ideas, desires and urban tensions into visible scenarios, opening up the possibility of building cities also from the dreams of those who inhabit them.'
+        'Built from thousands of LEGO bricks, this hands-on tool reframes the conversation about the city\'s future as something tangible, playful, and open to everyone. An invitation to imagine, challenge, and grasp the real-life impact that upcoming urban projects will have on daily life along the Costanera waterfront in Concepción.',
+        'In partnership with Waze, we built a web-based viewer that reveals patterns of congestion and road accidents across Chilean cities. The platform transforms real-time data into a new way of reading urban mobility — prompting researchers and decision-makers to explore how straightforward, place-aware choices can reshape how people move.',
+        'Working alongside the Port of Talcahuano, we created a digital platform that gives its technical teams the tools to assess existing urban projects and prototype new scenarios — using both static and live data to make the future legible before it is built.',
+        'Together with Deep-Hub and Imagine-IT, we built an emergency viewer that tracks critical infrastructure and at-risk populations in real time during disaster events. A platform built for action: enabling fast, evidence-based decisions that can change the outcome when every minute counts.',
+        'We built an interactive data platform that brings stakeholders together around more than 1,500 regional indicators in a shared, integrated view. Designed to bridge academia, policymakers, and communities, it turns complex datasets into productive conversations about the future of our city.',
+        'We designed the most comprehensive and up-to-date territorial data catalog in the Biobío region — a free, open-access web platform where researchers, students, and technical teams from both public and private sectors can find the data they need to understand, interrogate, and plan for the territory\'s future.',
+        'We built a digital platform centered on the co-design of public spaces, transforming civic participation into a collective, forward-looking experience. Backed by artificial intelligence, this creative research tool translates community ideas, aspirations, and tensions into concrete spatial scenarios — making it possible to build cities from the ground up, starting with the people who live in them.'
       ]
     },
 
     schedule: {
       masterclass: {
         caption: '#Masterclass',
-        title: 'Modeling the future of mobility',
-        sub: 'Naroa Coretti - Research Scientist, MIT Media Lab',
+        title: 'Designing the future of mobility',
+        sub: 'Naroa Coretti — Research Scientist, MIT Media Lab',
         paras: [
-          'What if we could test the future of our cities before building it? Naroa Coretti, research scientist at MIT City Science, will explore how advanced simulation and data-driven models are transforming the way we understand, design and manage the mobility systems of the future.',
-          'At City Science Biobío she will present how city simulation makes it possible to anticipate urban decisions and design more sustainable territories.'
+          'What if we could stress-test the future of our cities before committing to build it? Naroa Coretti, Research Scientist at MIT City Science, will show how advanced simulation and data-driven models are changing the way we understand, design, and govern urban mobility systems.',
+          'At City Science Biobío, she will demonstrate how city simulation enables teams to anticipate the outcomes of planning decisions and design more resilient, sustainable territories.'
         ],
         meta: 'Jun 16 · 2026 — Concepción, Chile',
         linkLabel: 'Register for the Masterclass →'
       },
       footerQuote:
-        'Urban technology with impact: a look at four years of innovation applied to Biobío, from the MIT Media Lab to CLBB\'s territorial data platforms.',
+        'Urban technology with impact: four years of applied innovation in Biobío — from the MIT Media Lab to CLBB\'s suite of territorial data platforms.',
       closeTime: 'June 16–18',
       closeVenue: 'UdeC Library'
     },
 
     agenda: {
-      sectionLabel: '● Guided tours — Limited spots per day',
-      publicoObjetivo: 'Target audience',
-      objetivo: 'Objective',
+      sectionLabel: '● Guided tours — Limited places per day',
+      publicoObjetivo: 'Audience',
+      objetivo: 'Goal',
       inscribirse: 'Register →',
       days: [
         {
           weekday: 'Tuesday',
           theme: 'Political and strategic leadership',
-          audience: 'Regional government, ministerial secretariats, mayors, strategic partners, academia and the regional ecosystem.',
-          objective: 'Present the CLBB projects and show the value of the lab as a platform for territorial development.'
+          audience: 'Regional government officials, ministerial secretariats, mayors, strategic partners, academia, and the regional innovation ecosystem.',
+          objective: 'Showcase CLBB\'s project portfolio and demonstrate the lab\'s value as a platform for evidence-based territorial development.'
         },
         {
           weekday: 'Wednesday',
           theme: 'Executive leadership and technical validation',
-          audience: 'Planning departments, public services, managers, territorial analysts, GIS leads and researchers.',
-          objective: 'Validate practical applications, features and opportunities for institutional use of the platforms.'
+          audience: 'Urban planning offices, public agencies, department heads, territorial analysts, GIS specialists, and researchers.',
+          objective: 'Validate real-world applications, platform capabilities, and pathways for institutional adoption.'
         },
         {
           weekday: 'Thursday',
           theme: 'Academia, innovation and community',
-          audience: 'Universities, innovation ecosystem, communications, schools, neighborhood associations and community organizations.',
-          objective: 'Strengthen the public narrative and bring the platform closer to citizens through education and territorial participation.'
+          audience: 'Universities, innovation hubs, media, schools, neighborhood associations, and community organizations.',
+          objective: 'Broaden the public narrative and connect the platform with citizens through education, outreach, and community-led territorial engagement.'
         }
       ]
     },
 
     partners: {
       sectionLabel: '● Organizers and partners',
-      titleHtml: 'The people who make<br />the event possible',
+      titleHtml: 'The organizations that make<br />this event possible',
       invita: 'Host',
       aliados: 'Partners',
       auspicia: 'Sponsor',
       patrocina: 'Endorsed by',
       mediaPartner: 'Media partner',
-      tagline: 'City Lab Biobío — City science at the southern end of the world',
+      tagline: 'City Lab Biobío — City science from the southern tip of the world',
       eventDate: 'June 15–18 · Concepción',
       venue: 'Central Library, Universidad de Concepción',
       copyright: '© 2026 City Lab Biobío. All rights reserved.'
@@ -239,8 +239,8 @@ export const dict = {
   de: {
     meta: {
       description:
-          'City Science Biobío 2026 – Urbane Technologie mit Wirkung. City Lab Biobío präsentiert vier Jahre Innovation in der Stadt. Concepción, 15.–18. Juni.',
-      ogDescription: 'Die Zukunft von Biobío, betrachtet durch die Linse der Stadtforschung.'
+        'City Science Biobío 2026 – Urbane Technologie mit Wirkung. City Lab Biobío zeigt vier Jahre Stadtinnovation aus dem Süden der Welt. Concepción, 15.–18. Juni.',
+      ogDescription: 'Die Zukunft von Biobío – gestaltet durch Stadtforschung.'
     },
 
     nav: {
@@ -251,101 +251,101 @@ export const dict = {
       agenda: 'Programm',
       aliados: 'Partner',
       menuAria: 'Navigation',
-      langAria: 'Sprache ändern'
+      langAria: 'Sprache wechseln'
     },
 
     hero: {
       pill: 'Urbane Technologie mit Wirkung',
-      leadHtml: 'City Lab Biobío präsentiert <strong>vier Jahre Innovation</strong> in der Stadt',
+      leadHtml: 'City Lab Biobío zeigt <strong>vier Jahre Stadtinnovation</strong>',
       dates: '15.–18. Juni 2026',
       venue: 'Zentralbibliothek, Universidad de Concepción',
-      scrollHint: 'Scrollen, um unser Event zu entdecken'
+      scrollHint: 'Scrollen und entdecken'
     },
 
     about: {
       pill: 'Wer wir sind',
       leadHtml:
-          'Unser Hauptziel ist die <strong>Modellierung von Szenarien, um die Auswirkungen städtebaulicher Entscheidungen vorherzusehen</strong>, um so die Stadtplanung mit Data Science zu unterstützen.',
+        'Unser zentrales Ziel ist die <strong>Szenarienmodellierung zur Folgenabschätzung städtebaulicher Entscheidungen</strong> — als datengestützte Grundlage für eine zukunftsfähige Stadtplanung.',
       transferHtml:
-          'Dabei stützt es sich auf <strong>den Technologie- und Wissenstransfer von MIT City Science</strong>.',
-      imgAlt: 'Urbane Modellierung mit Data Science',
+        'Dabei setzen wir auf <strong>die Technologien und das Fachwissen von MIT City Science</strong>.',
+      imgAlt: 'Urbane Datenanalyse in der Praxis',
       place: 'Concepción, Chile — Juni 2026',
       headlineHtml: 'Urbane Technologie<br/>mit Wirkung',
       conceptoText:
-          'Die Zukunft von Biobío, betrachtet durch die Linse der Stadtforschung. Heute verfügen wir über mehr Daten, mehr Werkzeuge und erstklassige Kapazitäten, um Lösungen für die urbanen Herausforderungen der kommenden Generationen zu entwickeln.',
+        'Die Zukunft von Biobío — neu gedacht mit den Methoden der Stadtforschung. Mit mehr Daten, leistungsfähigeren Werkzeugen und international anerkannter Expertise entwickeln wir Antworten auf die urbanen Herausforderungen der nächsten Generationen.',
       expansionHtml:
-          'Mit <strong>City Science Biobío</strong> markieren wir den Beginn der Expansion des Labors und seiner Technologien in andere Städte des Landes und Südamerikas.'
+        '<strong>City Science Biobío</strong> markiert den Beginn eines neuen Kapitels: Das Labor und seine Plattformen wachsen über die Region hinaus — in weitere Städte Chiles und Südamerikas.'
     },
 
     projects: {
       title: 'Projekte',
       intro:
-          'Wir laden Sie ein, die Technologien zu entdecken, die am südlichen Ende der Welt für die Stadtforschung entwickelt wurden.',
+        'Entdecken Sie die Technologien, die wir für die Stadtforschung am südlichen Ende der Welt entwickelt haben',
       descriptions: [
-        'Durch ein aus Tausenden von LEGO-Teilen gebautes Modell macht dieses Werkzeug den Diskurs über die Zukunft der Stadt zu einem greifbaren, spielerischen und kollektiven Erlebnis für alle. Eine Einladung zum Vorstellen, Hinterfragen und Verstehen der tatsächlichen Auswirkungen, die zukünftige städtische Projekte auf das tägliche Leben entlang der Uferpromenade Costanera in Concepción haben werden.',
-        'In Partnerschaft mit Waze haben wir einen Web-Viewer entwickelt, der hilft, Stau- und Unfallmuster in verschiedenen Städten Chiles zu verstehen. Eine Plattform, die Echtzeitdaten in ein neues Verständnis von Mobilität verwandelt und Akademiker sowie Entscheidungsträger dazu einlädt, zu untersuchen und zu erforschen, wie Mobilität durch einfache, an ein dynamisches Gebiet geknüpfte Entscheidungen transformiert werden kann.',
-        'Gemeinsam mit dem Hafen von Talcahuano haben wir eine digitale Plattform entwickelt, die es den technischen Teams ermöglicht, bestehende städtische Projekte zu evaluieren und neue Szenarien unter Verwendung von statischen und Echtzeitdaten zu entwerfen, um die Zukunft sichtbar zu machen, bevor sie gebaut wird.',
-        'In Partnerschaft mit Deep-Hub und Imagine-IT haben wir einen Notfall-Viewer entwickelt, der in Katastrophensituationen kritische Infrastrukturen und potenziell gefährdete Bevölkerungsgruppen in Echtzeit überwacht. Eine Plattform, die darauf ausgelegt ist, zu handeln und datengesteuerte Entscheidungen zu treffen, die in der Lage sind, den Ausgang eines Notfalls zu verändern.',
-        'Wir haben einen digitalen Tisch entwickelt, an dem wir uns rund um die Daten versammeln können, um mehr als 1.500 territoriale Indikatoren integriert zu analysieren, zu diskutieren und zu visualisieren. Ein Werkzeug, das entwickelt wurde, um Begegnungen zwischen Wissenschaft, Entscheidungsträgern und Gemeinden zu fördern und komplexe Informationen in Dialoge zur Verbesserung unserer Stadt zu verwandeln.',
-        'Wir haben den größten und aktuellsten Katalog territorialer Daten in der Region Biobío entworfen — eine kostenlose, offene Webplattform, damit Wissenschaft, Studierende und technische Teams aus dem öffentlichen und privaten Sektor einfach und übersichtlich auf die Daten zugreifen können, die sie benötigen, um das Gebiet zu verstehen, zu hinterfragen und bessere Entscheidungen für dessen Zukunft zu planen.',
-        'Wir haben eine digitale Plattform mit Fokus auf die Gestaltung öffentlicher Räume geschaffen, die Bürgerbeteiligung in ein kollektives und innovatives Erlebnis verwandelt. Angetrieben von Künstlicher Intelligenz, verwandelt dieses kreative Forschungswerkzeug Ideen, Wünsche und urbane Spannungen in sichtbare Szenarien und eröffnet die Möglichkeit, Städte auch aus den Träumen ihrer Bewohner heraus zu bauen.'
+        'Aus Tausenden von LEGO-Steinen gebaut, macht dieses Werkzeug Stadtplanung greifbar: Es verwandelt abstrakte Debatten über die Zukunft der Stadt in ein spielerisches, gemeinsames Erlebnis für alle. Eine Einladung, die konkreten Auswirkungen künftiger Stadtprojekte auf den Alltag am Costanera-Ufer in Concepción zu erkunden, zu hinterfragen — und mitzugestalten.',
+        'Gemeinsam mit Waze haben wir einen webbasierten Viewer entwickelt, der Stau- und Unfallmuster in chilenischen Städten sichtbar macht. Die Plattform übersetzt Echtzeitdaten in ein neues Verständnis urbaner Mobilität — und zeigt Forschenden wie Entscheidungsträgern, wie gezielte, ortsbezogene Maßnahmen den städtischen Verkehr nachhaltig verändern können.',
+        'Im Auftrag des Hafens von Talcahuano haben wir eine digitale Plattform entwickelt, mit der technische Teams bestehende Stadtprojekte bewerten und neue Szenarien entwickeln können — auf Basis statischer wie auch aktueller Daten, um Entscheidungen fundiert zu treffen, bevor sie umgesetzt werden.',
+        'Zusammen mit Deep-Hub und Imagine-IT haben wir ein Einsatzwerkzeug für Katastrophenschutzlagen entwickelt: ein Echtzeit-Viewer, der kritische Infrastrukturen und gefährdete Bevölkerungsgruppen überwacht. Schnelle, datenbasierte Entscheidungen — genau dann, wenn es darauf ankommt.',
+        'Wir haben eine interaktive Analyseplattform entwickelt, die Akteuren aus Wissenschaft, Politik und Zivilgesellschaft einen gemeinsamen Blick auf über 1.500 raumbezogene Indikatoren ermöglicht. Komplexe Daten werden so zu produktiven Gesprächen über die Zukunft unserer Stadt.',
+        'Wir haben den umfassendsten und aktuellsten Geodatenkatalog der Region Biobío aufgebaut — eine frei zugängliche Webplattform, über die Forschungseinrichtungen, Studierende sowie Fachkräfte aus dem öffentlichen und privaten Sektor gezielt auf die Daten zugreifen können, die sie für Analyse, Planung und Entscheidungsfindung benötigen.',
+        'Wir haben eine digitale Plattform zur ko-kreativen Gestaltung öffentlicher Räume entwickelt, die Bürgerbeteiligung neu definiert: kollektiv, innovativ und wirkungsorientiert. Unterstützt durch Künstliche Intelligenz, übersetzt dieses Forschungswerkzeug Ideen, Wünsche und Spannungen aus der Stadtgesellschaft in konkrete räumliche Szenarien — und macht es möglich, Städte von Grund auf mit und für ihre Bewohnerinnen und Bewohner zu gestalten.'
       ]
     },
 
     schedule: {
       masterclass: {
         caption: '#Masterclass',
-        title: 'Die Modellierung der Zukunft der Mobilität',
-        sub: 'Naroa Coretti - Research Scientist, MIT Media Lab',
+        title: 'Mobilität der Zukunft — Szenarien, Daten, Entscheidungen',
+        sub: 'Naroa Coretti — Research Scientist, MIT Media Lab',
         paras: [
-          'Was wäre, wenn wir die Zukunft unserer Städte testen könnten, bevor wir sie bauen? Naroa Coretti, Research Scientist bei MIT City Science, wird untersuchen, wie fortschrittliche Simulationen und datengesteuerte Modelle die Art und Weise verändern, wie wir die Mobilitätssysteme der Zukunft verstehen, entwerfen und verwalten.',
-          'Bei City Science Biobío wird sie präsentieren, wie Stadtsimulation es ermöglicht, städtebauliche Entscheidungen vorauszusehen und nachhaltigere Gebiete zu gestalten.'
+          'Was wäre, wenn wir die Zukunft unserer Städte erproben könnten, bevor wir sie bauen? Naroa Coretti, Research Scientist am MIT City Science, zeigt, wie fortschrittliche Simulation und datengestützte Modelle die Planung, das Design und die Steuerung urbaner Mobilitätssysteme grundlegend verändern.',
+          'Bei City Science Biobío präsentiert sie, wie Stadtsimulation Teams in die Lage versetzt, die Folgen von Planungsentscheidungen vorauszudenken und widerstandsfähigere, lebenswertere Stadtgebiete zu entwickeln.'
         ],
-        meta: '16. Jun · 2026 — Concepción, Chile',
+        meta: '16. Juni · 2026 — Concepción, Chile',
         linkLabel: 'Zur Masterclass anmelden →'
       },
       footerQuote:
-          'Urbane Technologie mit Wirkung: Ein Blick auf vier Jahre angewandte Innovation für Biobío, vom MIT Media Lab bis zu den territorialen Datenplattformen des CLBB.',
+        'Urbane Technologie mit Wirkung: Vier Jahre angewandte Stadtforschung in Biobío — vom MIT Media Lab bis zu den raumbezogenen Datenplattformen des CLBB.',
       closeTime: '16.–18. Juni',
-      closeVenue: 'UdeC Bibliothek'
+      closeVenue: 'Bibliothek der UdeC'
     },
 
     agenda: {
-      sectionLabel: '● Geführte Touren — Begrenzte Plätze pro Tag',
+      sectionLabel: '● Geführte Rundgänge — Begrenzte Teilnehmerzahl pro Tag',
       publicoObjetivo: 'Zielgruppe',
-      objetivo: 'Zielsetzung',
+      objetivo: 'Ziel',
       inscribirse: 'Anmelden →',
       days: [
         {
           weekday: 'Dienstag',
-          theme: 'Politische und strategische Führung',
-          audience: 'Regionalregierung, Ministerialsekretariate, Bürgermeister, strategische Partner, Wissenschaft und das regionale Ökosystem.',
-          objective: 'Die CLBB-Projekte präsentieren und den Wert des Labors als Plattform für die territoriale Entwicklung aufzeigen.'
+          theme: 'Politik, Strategie und Steuerung',
+          audience: 'Regionalregierung, Ministerialbehörden, Bürgermeister, strategische Partner, Wissenschaft und das regionale Innovationsumfeld.',
+          objective: 'Das Projektportfolio des CLBB vorstellen und den Mehrwert des Labors als Plattform für evidenzbasierte Regionalentwicklung aufzeigen.'
         },
         {
           weekday: 'Mittwoch',
-          theme: 'Führungsebene und technische Validierung',
-          audience: 'Planungsabteilungen, öffentliche Dienste, Manager, territoriale Analysten, GIS-Verantwortliche und Forscher.',
-          objective: 'Praktische Anwendungen, Funktionen und Möglichkeiten für die institutionelle Nutzung der Plattformen validieren.'
+          theme: 'Verwaltung, Fachebene und technische Validierung',
+          audience: 'Stadtplanungsämter, Behörden, Führungskräfte, Geoinformationsspezialistinnen und -spezialisten, Raumanalysten sowie Forschende.',
+          objective: 'Praxistauglichkeit, Funktionsumfang und Potenziale für die institutionelle Nutzung der Plattformen prüfen und validieren.'
         },
         {
           weekday: 'Donnerstag',
-          theme: 'Wissenschaft, Innovation und Gemeinschaft',
-          audience: 'Universitäten, Innovationsökosystem, Kommunikation, Schulen, Nachbarschaftsvereine und Gemeinschaftsorganisationen.',
-          objective: 'Den öffentlichen Diskurs stärken und die Plattform durch Bildung und territoriale Bürgerbeteiligung näher an die Menschen bringen.'
+          theme: 'Wissenschaft, Innovation und Stadtgesellschaft',
+          audience: 'Hochschulen, Innovationsnetzwerke, Medien, Schulen, Bürgervereine und zivilgesellschaftliche Organisationen.',
+          objective: 'Die gesellschaftliche Relevanz des Labors stärken und die Plattform durch Bildung und partizipative Stadtentwicklung in der breiten Öffentlichkeit verankern.'
         }
       ]
     },
 
     partners: {
-      sectionLabel: '● Organisatoren und Partner',
-      titleHtml: 'Die Menschen, die das Event<br />möglich machen',
-      invita: 'Gastgeber',
+      sectionLabel: '● Veranstalter und Partner',
+      titleHtml: 'Die Organisationen, die dieses<br />Event möglich machen',
+      invita: 'Ausrichter',
       aliados: 'Partner',
-      auspicia: 'Sponsor',
-      patrocina: 'Unterstützt von',
+      auspicia: 'Förderer',
+      patrocina: 'Schirmherrschaft',
       mediaPartner: 'Medienpartner',
-      tagline: 'City Lab Biobío — Stadtforschung am südlichen Ende der Welt',
+      tagline: 'City Lab Biobío — Stadtforschung vom südlichen Ende der Welt',
       eventDate: '15.–18. Juni · Concepción',
       venue: 'Zentralbibliothek, Universidad de Concepción',
       copyright: '© 2026 City Lab Biobío. Alle Rechte vorbehalten.'
