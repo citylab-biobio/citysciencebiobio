@@ -1,6 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, getContext } from 'svelte';
   import AnimatedSvg from '$lib/components/AnimatedSvg.svelte';
+
+  const { t } = getContext('i18n');
 
   const VIDEO_SRC = 'https://d26q11cgz8q0ri.cloudfront.net/2026/06/03181954/movilidad.mp4';
   const VENUE_IMG = 'https://d26q11cgz8q0ri.cloudfront.net/2026/06/03222713/bibliotecaudec-scaled.png';
@@ -9,20 +11,10 @@
   // Longer on mobile so the masterclass dwells a bit before releasing.
   let SCROLL_PX = 3200;
 
-  // Masterclass copy — single source, reused by the desktop overlay and the
-  // mobile (scroll-over-video) block.
-  const masterclass = {
-    caption: '#Masterclass',
-    title: 'Modelando el futuro de la movilidad',
-    sub: 'Naroa Coretti - Research Scientist MIT Media Lab',
-    paras: [
-      '¿Qué pasaría si pudiéramos probar el futuro de nuestras ciudades antes de construirlo? Naroa Coretti, investigadora científica de MIT City Science explorará cómo la simulación avanzada y los modelos basados en datos están transformando la forma en que entendemos, diseñamos y gestionamos los sistemas de movilidad del futuro.',
-      'En City Science Biobío presentará cómo la simulación de ciudad permite anticipar decisiones urbanas y diseñar territorios más sostenibles.'
-    ],
-    meta: '16 Jun · 2026 — Concepción, Chile',
-    link: 'https://docs.google.com/forms/d/e/1FAIpQLSeZebu6M_XhaHywPAalQmkijtbEwp1G0YHiBepzT269Yy48UA/viewform?usp=publish-editor',
-    linkLabel: 'Inscribirse en la Masterclass →'
-  };
+  // Masterclass copy lives in the i18n dictionary ($t.schedule.masterclass).
+  // Only the non-textual registration link stays here.
+  const MASTERCLASS_LINK =
+    'https://docs.google.com/forms/d/e/1FAIpQLSeZebu6M_XhaHywPAalQmkijtbEwp1G0YHiBepzT269Yy48UA/viewform?usp=publish-editor';
 
   let sectionEl, videoEl, mountainEl;
   let footerEls = [];
@@ -135,17 +127,17 @@
       <!-- Overlay: blooms in softly, then text staggers (desktop) -->
       <div class="media-overlay" style="opacity:{overlayOp}; backdrop-filter:blur({overlayBlur}px); -webkit-backdrop-filter:blur({overlayBlur}px);">
         <span class="ov-caption" style="opacity:{elR[0]}; transform:translateY({(1-elR[0])*22}px);">
-          {masterclass.caption}
+          {$t.schedule.masterclass.caption}
         </span>
         <div class="ov-content">
-          <h3 class="ov-title yellow" style="opacity:{elR[1]}; transform:translateY({(1-elR[1])*22}px);">{masterclass.title}</h3>
-          <p class="ov-sub" style="opacity:{elR[2]}; transform:translateY({(1-elR[2])*18}px);">{masterclass.sub}</p>
-          {#each masterclass.paras as para, i}
+          <h3 class="ov-title yellow" style="opacity:{elR[1]}; transform:translateY({(1-elR[1])*22}px);">{$t.schedule.masterclass.title}</h3>
+          <p class="ov-sub" style="opacity:{elR[2]}; transform:translateY({(1-elR[2])*18}px);">{$t.schedule.masterclass.sub}</p>
+          {#each $t.schedule.masterclass.paras as para, i}
             <p class="ov-text" style="opacity:{elR[3 + i]}; transform:translateY({(1-elR[3 + i])*16}px);">{para}</p>
           {/each}
-          <p class="ov-meta" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);">{masterclass.meta}</p>
-          <a class="ov-link" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);" href={masterclass.link} target="_blank" rel="noopener noreferrer">
-            {masterclass.linkLabel}
+          <p class="ov-meta" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);">{$t.schedule.masterclass.meta}</p>
+          <a class="ov-link" style="opacity:{elR[5]}; transform:translateY({(1-elR[5])*14}px);" href={MASTERCLASS_LINK} target="_blank" rel="noopener noreferrer">
+            {$t.schedule.masterclass.linkLabel}
           </a>
         </div>
       </div>
@@ -163,8 +155,7 @@
     style="opacity:{footerReveals[0]}; transform: translateY({(1 - footerReveals[0]) * 16}px); filter: blur({(1 - footerReveals[0]) * 5}px);"
   >
     <p>
-      Tecnología urbana con impacto: una mirada a cuatro años de innovación aplicada al
-      Biobío, del MIT Media Lab a las plataformas de datos territoriales del CLBB.
+      {$t.schedule.footerQuote}
     </p>
   </div>
 
@@ -194,9 +185,9 @@
 
   <!-- 3. Label -->
   <div class="mf-label" style="opacity:{mountainLabel};">
-    <span class="mf-time">Del 16 al 18 de junio</span>
+    <span class="mf-time">{$t.schedule.closeTime}</span>
     <img src="https://d26q11cgz8q0ri.cloudfront.net/2026/05/28152803/logo-scaled.png" alt="City Science Biobío 2026" class="title-close" />
-    <span class="mf-time">Biblioteca UdeC</span>
+    <span class="mf-time">{$t.schedule.closeVenue}</span>
     </div>
 </div>
 
@@ -249,7 +240,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2rem;
+    padding: 4.5rem 2rem 2rem;
     background:
       radial-gradient(ellipse at center, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.68) 100%),
       linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.3) 55%);
@@ -260,7 +251,7 @@
   .ov-caption {
     position: absolute;
     top: 2rem; left: 0; width: 100%;
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), sans-serif;
     font-size: 0.78rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -296,7 +287,7 @@
   }
 
   .ov-meta {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), sans-serif;
     font-size: 0.8rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -338,19 +329,6 @@
     will-change: opacity, transform, filter;
   }
 
-  /* Vertical divider: the wide line SVG rotated 90°, revealed on scroll */
-  .fc-divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 360px;
-    margin: 2.5rem auto 0;
-  }
-
-  .fc-divider :global(.animated-svg) {
-    transform: rotate(90deg);
-  }
-
   /* ── Closing shot ── */
   .mountain-footer { position: relative; height: 60vh; overflow: hidden; }
 
@@ -368,7 +346,7 @@
       transparent 100%
     );
     -webkit-mask-image: -webkit-linear-gradient(
-      top,
+      to bottom,
       transparent 0%,
       black 18%,
       black 82%,
@@ -407,7 +385,7 @@
   }
 
   .mf-time {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), sans-serif;
     font-size: clamp(1.6rem, 4.5vw, 2.75rem);
     letter-spacing: 0.08em;
     text-transform: uppercase;

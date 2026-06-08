@@ -1,13 +1,16 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, getContext } from 'svelte';
 
+  const { t } = getContext('i18n');
+
+  // Non-textual project data (logos/images/accents). Descriptions are pulled
+  // from the dictionary by index ($t.projects.descriptions[i]); brand names and
+  // proper-noun locations (sub) stay here untranslated.
   const projects = [
     {
       logo: 'https://citylabbiobio.cl/wp-content/uploads/2026/05/cityscope_fondo-oscuro.svg',
       name: 'CityScope',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142328/CLBB-12-scaled.jpg',
-      description:
-        'A través de una maqueta construida con miles de piezas LEGO, esta herramienta transforma la conversación sobre el futuro de la ciudad en una experiencia tangible, lúdica y colectiva para todo público. Una invitación a imaginar, cuestionar y comprender el impacto real que tendrán los proyectos urbanos futuros en la vida cotidiana  del sector de la Costanera de Concepción.',
       accent: '#ffcb05'
     },
     {
@@ -16,8 +19,6 @@
       name: 'Visor de tráfico y accidentes',
       sub: 'San Pedro de la Paz',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142940/01-1-scaled.png',
-      description:
-        'En alianza con Waze, se desarrolló un visor web que permite comprender patrones de congestión y accidentes vehiculares en diferentes ciudades de Chile. Una plataforma que convierte datos en tiempo real en una nueva forma de entender la movilidad, invitando a académicos y tomadores de decisión a investigar y explorar, cómo la movilidad puede transformarse con decisiones simples y conectadas con un territorio dinámico.',
       accent: '#ffcc05'
     },
     {
@@ -26,8 +27,6 @@
       name: 'Ciudad Portuaria',
       sub: 'Talcahuano',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142349/tablet.png',
-      description:
-        'Junto a Puertos de Talcahuano se creó una plataforma digital que permite a sus equipos técnicos evaluar proyectos urbanos existentes e imaginar nuevos escenarios utilizando datos estáticos y en tiempo real, para hacer visible el futuro antes de construirlo.',
       accent: '#ffcc05'
     },
     {
@@ -35,8 +34,6 @@
       logoSize: "40px",
       name: 'Visor Incendios Forestales',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142742/01-scaled.png',
-      description:
-        'En alianza con Deep-Hub e Imagine-IT, creamos un visor de emergencia que permite monitorear en tiempo real infraestructuras críticas y población potencialmente en riesgo de verse afectada ante situaciones de desastres. Una plataforma pensada para  actuar y tomar decisiones basadas en datos capaces de cambiar el desenlace en una situación de emergencia.',
       accent: '#ffcc05'
     },
     {
@@ -44,8 +41,6 @@
       name: 'Metropolitan Scope Biobío',
       sub: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142625/MSB-6-scaled.png',
-      description:
-        'Desarrollamos una mesa digital que permite sentarnos en torno a los datos para analizar, discutir y visualizar más de 1.500 indicadores del territorio de forma integrada. Una herramienta pensada para impulsar el encuentro entre la academia, tomadores de decisión y comunidades, transformando la información compleja en conversaciones para mejorar nuestra ciudad.',
       accent: '#ffcc05'
     },
     {
@@ -53,16 +48,12 @@
       name: 'DataScope',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28170425/DataIS-Ckan.png',
       imgPos: '35% center',
-      description:
-      'Diseñamos el catálogo de datos territoriales actualizado más grande de la región del Biobío, una plataforma web de libre acceso para que la academia, estudiantes y equipos técnicos del sector público y privado puedan acceder, de forma simple y ordenada, a los datos que necesitan para entender el territorio, cuestionarlo y proyectar mejores decisiones para su futuro.',
       accent: '#ffcc05'
     },
     {
       logo: 'https://d26q11cgz8q0ri.cloudfront.net/2026/06/04121425/community-scaled.png',
       name: 'CommunityScope',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142449/Community-Scope-scaled.png',
-      description:
-        'Creamos una plataforma digital centrada en el diseño de espacios públicos que transforma la participación ciudadana en una experiencia colectiva e innovadora. Apoyada por inteligencia artificial, esta herramienta de investigación creativa, convierte ideas, deseos y tensiones urbanas en escenarios visibles, abriendo la posibilidad de construir ciudades también desde los sueños de quienes las habitan.',
       accent: '#ffcc05'
     }
   ];
@@ -204,9 +195,9 @@
 
     <!-- Header ─────────────────────────────────────────────────────────── -->
     <header class="proj-header">
-      <h2 class="proj-title">Proyectos</h2>
+      <h2 class="proj-title">{$t.projects.title}</h2>
       <p class="proj-intro">
-        Te invitamos a conocer las tecnologías desarrolladas para la ciencia de ciudad al sur del mundo
+        {$t.projects.intro}
       </p>
     </header>
 
@@ -225,7 +216,7 @@
               {#if p.sub}<span class="card-loc">{p.sub}</span>{/if}
             </div>
             <h3 class="card-name" style="color:{p.accent}">{p.name}</h3>
-            <p class="card-desc">{p.description}</p>
+            <p class="card-desc">{$t.projects.descriptions[i]}</p>
             <img src={p.logo} alt="" class="card-logo-inline" draggable="false" />
             <div class="accent-line" style="background:{p.accent}"></div>
           </div>

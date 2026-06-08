@@ -1,5 +1,7 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, getContext } from 'svelte';
+
+  const { t } = getContext('i18n');
 
   let canvas;
   let animId;
@@ -43,8 +45,7 @@
       ctx.clearRect(0, 0, w, h);
       t += 0.012;
       for (const el of elements) {
-        const alpha = el.baseAlpha * (0.45 + 0.55 * Math.sin(t * el.speed * 100 + el.phase));
-        ctx.globalAlpha = alpha;
+        ctx.globalAlpha = el.baseAlpha * (0.45 + 0.55 * Math.sin(t * el.speed * 100 + el.phase));
         ctx.fillStyle = el.color;
         ctx.strokeStyle = el.color;
         if (el.isDot) {
@@ -146,29 +147,29 @@
 
   <div class="container hero-content">
     <div class="eyebrow">
-      <span class="pill pill-outline pill-dot">Tecnología urbana con impacto</span>
+      <span class="pill pill-outline pill-dot">{$t.hero.pill}</span>
     </div>
 
     <img src="https://d26q11cgz8q0ri.cloudfront.net/2026/05/28152803/logo-scaled.png" alt="City Science Biobío 2026" class="title" />
 
     <p class="tagline">
-      City Lab Biobío expone <strong>cuatro años de innovación</strong> en la ciudad
+      {@html $t.hero.leadHtml}
     </p>
 
     <div class="event-info">
       <div class="event-meta">
-        <span>15 al 18 de junio, 2026</span>
+        <span>{$t.hero.dates}</span>
       </div>
       <div class="event-meta">
-        <span>Biblioteca Central, Universidad de Concepción</span>
+        <span>{$t.hero.venue}</span>
       </div>
     </div>
 
   </div>
 
   <div class="scroll-hint">
-    <span class="scroll-text">Desliza para conocer nuestro evento</span>
-    <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <span class="scroll-text">{$t.hero.scrollHint}</span>
+    <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none">
       <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </div>
@@ -280,7 +281,7 @@
   }
 
   .scroll-text {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), sans-serif;
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.12em;

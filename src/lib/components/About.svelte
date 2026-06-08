@@ -1,6 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, getContext } from 'svelte';
   import { invitan } from '$lib/partners.js';
+
+  const { t } = getContext('i18n');
 
   let imgEl;
   let conceptoEl;
@@ -38,16 +40,13 @@
 
     <!-- ¿Quiénes Somos? -->
     <div class="quienes-text">
-      <p class="pill pill-outline pill-dot" style="margin-bottom: 1.5rem">¿Quiénes Somos?</p>
+      <p class="pill pill-outline pill-dot" style="margin-bottom: 1.5rem">{$t.about.pill}</p>
       <h2 class="section-title yellow">City Lab Biobío</h2>
       <p class="body-text">
-        Nuestro principal objetivo es la <strong>modelación de escenarios para anticipar
-        el impacto de las decisiones urbanas</strong>, como una forma de apoyar con
-        ciencia de datos la planificación de las ciudades.
+        {@html $t.about.leadHtml}
       </p>
       <p class="body-text">
-        Para ello, utiliza <strong>la tecnología y la transferencia de conocimientos
-        del MIT City Science</strong>.
+        {@html $t.about.transferHtml}
       </p>
       <div class="partners-logos">
         {#each invitan as p}
@@ -68,7 +67,7 @@
     <img
       bind:this={imgEl}
       src="https://d26q11cgz8q0ri.cloudfront.net/2025/12/29081452/dji_fly_20250723_182732_0500_1753310141484_photo-scaled.png"
-      alt="Modelación urbana con ciencia de datos"
+      alt={$t.about.imgAlt}
       loading="lazy"
       style="transform: translateY({parallax}px)"
     />
@@ -88,7 +87,7 @@
         alt="City Science Biobío"
         class="event-logo"
       />
-      <p class="concepto-place">Concepción, Chile — junio 2026</p>
+      <p class="concepto-place">{$t.about.place}</p>
     </div>
 
     <div
@@ -100,17 +99,12 @@
       class="concepto-right"
       style="opacity:{cp}; transform: translateX({(1 - cp) * 70}px)"
     >
-      <h3 class="concepto-headline">Tecnología urbana<br/>con impacto</h3>
+      <h3 class="concepto-headline">{@html $t.about.headlineHtml}</h3>
       <p class="concepto-text">
-        El futuro del Biobío, visto con ciencia de ciudad. Hoy, contamos con
-        más datos, más herramientas y una capacidad instalada de clase mundial
-        para construir soluciones a los desafíos urbanos de las próximas
-        generaciones.
+        {$t.about.conceptoText}
       </p>
       <p class="concepto-text">
-        En <strong>City Science Biobío</strong> marcaremos el inicio de la
-        expansión del laboratorio y sus tecnologías hacia otras ciudades del
-        país y Sudamérica.
+        {@html $t.about.expansionHtml}
       </p>
     </div>
 
@@ -191,7 +185,7 @@
       transparent 100%
     );
     -webkit-mask-image: -webkit-linear-gradient(
-      top,
+      to bottom,
       transparent 0%,
       black 50%,
       black 50%,
@@ -231,7 +225,7 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+    -webkit-mask-image: -webkit-linear-gradient(to bottom, transparent 0%, black 100%);
     pointer-events: none;
   }
 
@@ -298,7 +292,7 @@
   }
 
   .concepto-headline {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), sans-serif;
     font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 700;
     line-height: 1.1;

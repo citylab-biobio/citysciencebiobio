@@ -1,31 +1,25 @@
 <script>
+  import { getContext } from 'svelte';
+
+  const { t } = getContext('i18n');
+
+  // Non-textual day data (number/accent/link/slots). Weekday, theme, audience
+  // and objective come from the dictionary by index ($t.agenda.days[i]).
   const days = [
     {
       day: 16,
-      weekday: 'Martes',
-      theme: 'Dirección política y estratégica',
-      audience: 'GORE, SEREMIs, alcaldes, aliados estratégicos, academia y ecosistema regional.',
-      objective: 'Presentar los proyectos del CLBB y mostrar el valor del lab como plataforma para el desarrollo territorial.',
       accent: '#f5c518',
       link: 'https://docs.google.com/forms/d/e/1FAIpQLSdBp26IefYcL3pRc88K6VaPlMAjoTXSQvZfiw47PshnFvkj6g/viewform?usp=publish-editor',
       slots: ['12:00 hrs', '15:00 hrs', '17:00 hrs'],
     },
     {
       day: 17,
-      weekday: 'Miércoles',
-      theme: 'Dirección ejecutiva y validación técnica',
-      audience: 'SECPLAN, servicios públicos, jefaturas, analistas territoriales, encargados SIG e investigadores.',
-      objective: 'Validar aplicaciones prácticas, funcionalidades y oportunidades de uso institucional de las plataformas.',
       accent: '#4a9eff',
       link: 'https://docs.google.com/forms/d/e/1FAIpQLSf5KqBz11Vk9uuXZdAHam3zBRSWGTZ1VbYDKIunogJKv6tXOA/viewform?usp=publish-editor',
       slots: ['10:00 hrs', '12:00 hrs', '15:00 hrs', '17:00 hrs'],
     },
     {
       day: 18,
-      weekday: 'Jueves',
-      theme: 'Academia, innovación y comunidad',
-      audience: 'Universidades, ecosistema de innovación, comunicaciones, colegios, juntas de vecinos y organizaciones comunitarias.',
-      objective: 'Fortalecer el relato público y acercar la plataforma a la ciudadanía desde la educación y participación territorial.',
       accent: '#a78bfa',
       link: 'https://docs.google.com/forms/d/e/1FAIpQLSejBcpBZeQ2CJNifavFoJToA4FWovg6mgjcll4OjF3eO7zV4Q/viewform?usp=publish-editor',
       slots: ['10:00 hrs', '12:00 hrs', '15:00 hrs', '17:00 hrs'],
@@ -40,7 +34,7 @@
   <div class="container">
 
     <div class="header">
-      <p class="section-label">● Visita guiadas - Cupos limitados por día</p>
+      <p class="section-label">{$t.agenda.sectionLabel}</p>
       <h2 class="section-title">City Science Biobío Expo</h2>
     </div>
 
@@ -53,7 +47,7 @@
           style="--accent: {d.accent}"
           on:click={() => (activeDay = i)}
         >
-          {d.weekday} {d.day}
+          {$t.agenda.days[i].weekday} {d.day}
         </button>
       {/each}
     </div>
@@ -62,18 +56,18 @@
       {#each days as d, i (d.day)}
         <div class="day-card glass" class:is-active={i === activeDay} style="--accent: {d.accent}">
           <div class="day-header">
-            <div class="day-num" style="color: {d.accent}">{d.weekday} {d.day}</div>
-            <h3 class="day-theme">{d.theme}</h3>
+            <div class="day-num" style="color: {d.accent}">{$t.agenda.days[i].weekday} {d.day}</div>
+            <h3 class="day-theme">{$t.agenda.days[i].theme}</h3>
           </div>
 
           <div class="day-body">
             <div class="day-section">
-              <p class="day-section-label">Público objetivo</p>
-              <p class="day-section-text">{d.audience}</p>
+              <p class="day-section-label">{$t.agenda.publicoObjetivo}</p>
+              <p class="day-section-text">{$t.agenda.days[i].audience}</p>
             </div>
             <div class="day-section">
-              <p class="day-section-label">Objetivo</p>
-              <p class="day-section-text">{d.objective}</p>
+              <p class="day-section-label">{$t.agenda.objetivo}</p>
+              <p class="day-section-text">{$t.agenda.days[i].objective}</p>
             </div>
 
             <div class="slots-grid">
@@ -87,7 +81,7 @@
 
           <div class="day-footer">
             <a class="day-cta" href={d.link} target="_blank" rel="noopener noreferrer" style="--accent: {d.accent}">
-              Inscribirse →
+              {$t.agenda.inscribirse}
             </a>
           </div>
 
@@ -257,7 +251,7 @@
       border: 1px solid rgba(255, 255, 255, 0.14);
       background: transparent;
       color: rgba(255, 255, 255, 0.7);
-      font-family: var(--font-heading);
+      font-family: var(--font-heading), sans-serif;
       font-size: 0.82rem;
       font-weight: 700;
       letter-spacing: 0.02em;
