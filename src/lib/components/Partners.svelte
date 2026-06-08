@@ -1,6 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, getContext } from 'svelte';
   import { invitan } from '$lib/partners.js';
+
+  const { t } = getContext('i18n');
 
   let sectionEl;
   let visible = false;
@@ -25,14 +27,18 @@
   const media = [
     { name: 'CNN Chile', logo: 'https://d26q11cgz8q0ri.cloudfront.net/2025/09/24051522/CNN-chile.png' },
   ];
+
+  const auspicia = [
+    { name: 'Camanchaca', logo: 'https://d26q11cgz8q0ri.cloudfront.net/2026/06/08135014/camanchaca_blanco.png'},
+  ]
 </script>
 
 <section id="aliados" class="section-padding" class:visible bind:this={sectionEl}>
   <div class="container">
 
     <div class="header">
-      <p class="section-label">● Organizadores y aliados</p>
-      <h2 class="section-title">Quienes hacen<br />posible el evento</h2>
+      <p class="section-label">{$t.partners.sectionLabel}</p>
+      <h2 class="section-title">{@html $t.partners.titleHtml}</h2>
     </div>
 
     <!-- Photo-backed logo wall -->
@@ -40,7 +46,7 @@
 
       <!-- Invitan row -->
       <div class="wall-row">
-        <span class="row-label">Invita</span>
+        <span class="row-label">{$t.partners.invita}</span>
         <div class="row-cells">
           {#each invitan as p}
             <div class="cell">
@@ -56,7 +62,7 @@
 
       <!-- Aliados row -->
       <div class="wall-row">
-        <span class="row-label">Aliados</span>
+        <span class="row-label">{$t.partners.aliados}</span>
         <div class="row-cells">
           {#each aliados as p}
             <div class="cell">
@@ -70,9 +76,25 @@
         </div>
       </div>
 
+      <!-- Auspicia row -->
+      <div class="wall-row">
+        <span class="row-label">{$t.partners.auspicia}</span>
+        <div class="row-cells">
+          {#each auspicia as p}
+            <div class="cell">
+              {#if p.logo}
+                <img src={p.logo} alt={p.name} class="logo-img" />
+                {:else}
+                <span class="placeholder-text">{p.name}</span>
+                {/if}
+            </div>
+            {/each}
+        </div>
+      </div>
+
       <!-- Patrocinio row -->
       <div class="wall-row">
-        <span class="row-label">Patrocina</span>
+        <span class="row-label">{$t.partners.patrocina}</span>
         <div class="row-cells">
           {#each patrocinio as p}
             <div class="cell">
@@ -88,7 +110,7 @@
 
       <!-- Media row -->
       <div class="wall-row">
-        <span class="row-label">Media partner</span>
+        <span class="row-label">{$t.partners.mediaPartner}</span>
         <div class="row-cells">
           {#each media as p}
             <div class="cell">
@@ -113,18 +135,18 @@
         <div class="footer-logo">
           <img src="https://d26q11cgz8q0ri.cloudfront.net/2025/09/25000650/LOGO-CLBB-ORIGINAL-BLANCO-APAISADO.png" alt="City Lab Biobío" class="fl-clbb" />
           <span class="fl-sep">|</span>
-          <p class="footer-tagline">City Lab Biobío — Ciencia de ciudad al sur del mundo</p>
+          <p class="footer-tagline">{$t.partners.tagline}</p>
         </div>
       </div>
       <div class="footer-info">
         <p class="footer-event">City Science Biobío 2026</p>
-        <p class="footer-date">15 – 18 junio · Concepción</p>
-        <p class="footer-venue">Biblioteca Central, Universidad de Concepción</p>
+        <p class="footer-date">{$t.partners.eventDate}</p>
+        <p class="footer-venue">{$t.partners.venue}</p>
       </div>
     </div>
     <div class="footer-bar">
       <div class="container">
-        <p>© 2026 City Lab Biobío. Todos los derechos reservados.</p>
+        <p>{$t.partners.copyright}</p>
       </div>
     </div>
   </div>
