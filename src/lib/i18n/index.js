@@ -2,7 +2,7 @@
 // Detection is browser-language based (Accept-Language server-side,
 // navigator.language client-side); a `lang` cookie overrides it.
 
-export const LOCALES = ['es', 'en'];
+export const LOCALES = ['es', 'en', 'de'];
 export const DEFAULT_LOCALE = 'es';
 
 /** Pick a locale from an Accept-Language header (or navigator.language string). */
@@ -14,6 +14,7 @@ export function detectFromHeader(acceptLanguage) {
   for (const tag of tags) {
     if (tag.startsWith('en')) return 'en';
     if (tag.startsWith('es')) return 'es';
+    if (tag.startsWith('de')) return 'de';
   }
   return DEFAULT_LOCALE;
 }

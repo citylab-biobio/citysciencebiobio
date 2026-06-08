@@ -71,6 +71,13 @@
       aria-pressed={$locale === 'en'}
       on:click={() => setLocale('en')}
     >EN</button>
+    <span class="lang-sep">|</span>
+    <button
+      class="lang-opt"
+      class:active={$locale === 'de'}
+      aria-pressed={$locale === 'de'}
+      on:click={() => setLocale('de')}
+      >DE</button>
   </div>
 
   <button

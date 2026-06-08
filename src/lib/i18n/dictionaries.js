@@ -235,5 +235,120 @@ export const dict = {
       venue: 'Central Library, Universidad de Concepción',
       copyright: '© 2026 City Lab Biobío. All rights reserved.'
     }
+  },
+  de: {
+    meta: {
+      description:
+          'City Science Biobío 2026 – Urbane Technologie mit Wirkung. City Lab Biobío präsentiert vier Jahre Innovation in der Stadt. Concepción, 15.–18. Juni.',
+      ogDescription: 'Die Zukunft von Biobío, betrachtet durch die Linse der Stadtforschung.'
+    },
+
+    nav: {
+      inicio: 'Startseite',
+      nosotros: 'Über uns',
+      proyectos: 'Projekte',
+      masterclass: 'Masterclass',
+      agenda: 'Programm',
+      aliados: 'Partner',
+      menuAria: 'Navigation',
+      langAria: 'Sprache ändern'
+    },
+
+    hero: {
+      pill: 'Urbane Technologie mit Wirkung',
+      leadHtml: 'City Lab Biobío präsentiert <strong>vier Jahre Innovation</strong> in der Stadt',
+      dates: '15.–18. Juni 2026',
+      venue: 'Zentralbibliothek, Universidad de Concepción',
+      scrollHint: 'Scrollen, um unser Event zu entdecken'
+    },
+
+    about: {
+      pill: 'Wer wir sind',
+      leadHtml:
+          'Unser Hauptziel ist die <strong>Modellierung von Szenarien, um die Auswirkungen städtebaulicher Entscheidungen vorherzusehen</strong>, um so die Stadtplanung mit Data Science zu unterstützen.',
+      transferHtml:
+          'Dabei stützt es sich auf <strong>den Technologie- und Wissenstransfer von MIT City Science</strong>.',
+      imgAlt: 'Urbane Modellierung mit Data Science',
+      place: 'Concepción, Chile — Juni 2026',
+      headlineHtml: 'Urbane Technologie<br/>mit Wirkung',
+      conceptoText:
+          'Die Zukunft von Biobío, betrachtet durch die Linse der Stadtforschung. Heute verfügen wir über mehr Daten, mehr Werkzeuge und erstklassige Kapazitäten, um Lösungen für die urbanen Herausforderungen der kommenden Generationen zu entwickeln.',
+      expansionHtml:
+          'Mit <strong>City Science Biobío</strong> markieren wir den Beginn der Expansion des Labors und seiner Technologien in andere Städte des Landes und Südamerikas.'
+    },
+
+    projects: {
+      title: 'Projekte',
+      intro:
+          'Wir laden Sie ein, die Technologien zu entdecken, die am südlichen Ende der Welt für die Stadtforschung entwickelt wurden.',
+      descriptions: [
+        'Durch ein aus Tausenden von LEGO-Teilen gebautes Modell macht dieses Werkzeug den Diskurs über die Zukunft der Stadt zu einem greifbaren, spielerischen und kollektiven Erlebnis für alle. Eine Einladung zum Vorstellen, Hinterfragen und Verstehen der tatsächlichen Auswirkungen, die zukünftige städtische Projekte auf das tägliche Leben entlang der Uferpromenade Costanera in Concepción haben werden.',
+        'In Partnerschaft mit Waze haben wir einen Web-Viewer entwickelt, der hilft, Stau- und Unfallmuster in verschiedenen Städten Chiles zu verstehen. Eine Plattform, die Echtzeitdaten in ein neues Verständnis von Mobilität verwandelt und Akademiker sowie Entscheidungsträger dazu einlädt, zu untersuchen und zu erforschen, wie Mobilität durch einfache, an ein dynamisches Gebiet geknüpfte Entscheidungen transformiert werden kann.',
+        'Gemeinsam mit dem Hafen von Talcahuano haben wir eine digitale Plattform entwickelt, die es den technischen Teams ermöglicht, bestehende städtische Projekte zu evaluieren und neue Szenarien unter Verwendung von statischen und Echtzeitdaten zu entwerfen, um die Zukunft sichtbar zu machen, bevor sie gebaut wird.',
+        'In Partnerschaft mit Deep-Hub und Imagine-IT haben wir einen Notfall-Viewer entwickelt, der in Katastrophensituationen kritische Infrastrukturen und potenziell gefährdete Bevölkerungsgruppen in Echtzeit überwacht. Eine Plattform, die darauf ausgelegt ist, zu handeln und datengesteuerte Entscheidungen zu treffen, die in der Lage sind, den Ausgang eines Notfalls zu verändern.',
+        'Wir haben einen digitalen Tisch entwickelt, an dem wir uns rund um die Daten versammeln können, um mehr als 1.500 territoriale Indikatoren integriert zu analysieren, zu diskutieren und zu visualisieren. Ein Werkzeug, das entwickelt wurde, um Begegnungen zwischen Wissenschaft, Entscheidungsträgern und Gemeinden zu fördern und komplexe Informationen in Dialoge zur Verbesserung unserer Stadt zu verwandeln.',
+        'Wir haben den größten und aktuellsten Katalog territorialer Daten in der Region Biobío entworfen — eine kostenlose, offene Webplattform, damit Wissenschaft, Studierende und technische Teams aus dem öffentlichen und privaten Sektor einfach und übersichtlich auf die Daten zugreifen können, die sie benötigen, um das Gebiet zu verstehen, zu hinterfragen und bessere Entscheidungen für dessen Zukunft zu planen.',
+        'Wir haben eine digitale Plattform mit Fokus auf die Gestaltung öffentlicher Räume geschaffen, die Bürgerbeteiligung in ein kollektives und innovatives Erlebnis verwandelt. Angetrieben von Künstlicher Intelligenz, verwandelt dieses kreative Forschungswerkzeug Ideen, Wünsche und urbane Spannungen in sichtbare Szenarien und eröffnet die Möglichkeit, Städte auch aus den Träumen ihrer Bewohner heraus zu bauen.'
+      ]
+    },
+
+    schedule: {
+      masterclass: {
+        caption: '#Masterclass',
+        title: 'Die Modellierung der Zukunft der Mobilität',
+        sub: 'Naroa Coretti - Research Scientist, MIT Media Lab',
+        paras: [
+          'Was wäre, wenn wir die Zukunft unserer Städte testen könnten, bevor wir sie bauen? Naroa Coretti, Research Scientist bei MIT City Science, wird untersuchen, wie fortschrittliche Simulationen und datengesteuerte Modelle die Art und Weise verändern, wie wir die Mobilitätssysteme der Zukunft verstehen, entwerfen und verwalten.',
+          'Bei City Science Biobío wird sie präsentieren, wie Stadtsimulation es ermöglicht, städtebauliche Entscheidungen vorauszusehen und nachhaltigere Gebiete zu gestalten.'
+        ],
+        meta: '16. Jun · 2026 — Concepción, Chile',
+        linkLabel: 'Zur Masterclass anmelden →'
+      },
+      footerQuote:
+          'Urbane Technologie mit Wirkung: Ein Blick auf vier Jahre angewandte Innovation für Biobío, vom MIT Media Lab bis zu den territorialen Datenplattformen des CLBB.',
+      closeTime: '16.–18. Juni',
+      closeVenue: 'UdeC Bibliothek'
+    },
+
+    agenda: {
+      sectionLabel: '● Geführte Touren — Begrenzte Plätze pro Tag',
+      publicoObjetivo: 'Zielgruppe',
+      objetivo: 'Zielsetzung',
+      inscribirse: 'Anmelden →',
+      days: [
+        {
+          weekday: 'Dienstag',
+          theme: 'Politische und strategische Führung',
+          audience: 'Regionalregierung, Ministerialsekretariate, Bürgermeister, strategische Partner, Wissenschaft und das regionale Ökosystem.',
+          objective: 'Die CLBB-Projekte präsentieren und den Wert des Labors als Plattform für die territoriale Entwicklung aufzeigen.'
+        },
+        {
+          weekday: 'Mittwoch',
+          theme: 'Führungsebene und technische Validierung',
+          audience: 'Planungsabteilungen, öffentliche Dienste, Manager, territoriale Analysten, GIS-Verantwortliche und Forscher.',
+          objective: 'Praktische Anwendungen, Funktionen und Möglichkeiten für die institutionelle Nutzung der Plattformen validieren.'
+        },
+        {
+          weekday: 'Donnerstag',
+          theme: 'Wissenschaft, Innovation und Gemeinschaft',
+          audience: 'Universitäten, Innovationsökosystem, Kommunikation, Schulen, Nachbarschaftsvereine und Gemeinschaftsorganisationen.',
+          objective: 'Den öffentlichen Diskurs stärken und die Plattform durch Bildung und territoriale Bürgerbeteiligung näher an die Menschen bringen.'
+        }
+      ]
+    },
+
+    partners: {
+      sectionLabel: '● Organisatoren und Partner',
+      titleHtml: 'Die Menschen, die das Event<br />möglich machen',
+      invita: 'Gastgeber',
+      aliados: 'Partner',
+      auspicia: 'Sponsor',
+      patrocina: 'Unterstützt von',
+      mediaPartner: 'Medienpartner',
+      tagline: 'City Lab Biobío — Stadtforschung am südlichen Ende der Welt',
+      eventDate: '15.–18. Juni · Concepción',
+      venue: 'Zentralbibliothek, Universidad de Concepción',
+      copyright: '© 2026 City Lab Biobío. Alle Rechte vorbehalten.'
+    }
   }
 };
