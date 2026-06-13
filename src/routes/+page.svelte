@@ -1,5 +1,6 @@
 <script>
   import Hero from '$lib/components/Hero.svelte';
+  import Streaming from '$lib/components/Streaming.svelte';
   import About from '$lib/components/About.svelte';
   import Projects from '$lib/components/Projects.svelte';
   import Schedule from '$lib/components/Schedule.svelte';
@@ -13,6 +14,7 @@
 
 <main>
   <Hero />
+  <Streaming />
   <About />
   <AnimatedSvg preset="aboutProjects" />
   <Projects />

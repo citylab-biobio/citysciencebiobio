@@ -7,6 +7,7 @@
 
   // `key` indexes into $t.nav for the (reactive) label; geometry is static.
   const sections = [
+    { href: '#streaming', key: 'streaming'   },
     { href: '#aliados',   key: 'aliados'     },
     { href: '#agenda',    key: 'agenda'      },
     { href: '#programa',  key: 'masterclass' },

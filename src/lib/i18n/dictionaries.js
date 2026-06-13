@@ -19,6 +19,7 @@ export const dict = {
       masterclass: 'Masterclass',
       agenda: 'Agenda',
       aliados: 'Aliados',
+      streaming: 'En Vivo',
       menuAria: 'Navegación',
       langAria: 'Cambiar idioma'
     },
@@ -29,6 +30,12 @@ export const dict = {
       dates: '15 al 18 de junio, 2026',
       venue: 'Biblioteca Central, Universidad de Concepción',
       scrollHint: 'Desliza para conocer nuestro evento'
+    },
+
+    streaming: {
+      pill: '● Transmisión en vivo',
+      title: 'Sigue el evento en vivo',
+      description: 'Conecta con la transmisión en directo de City Science Biobío 2026 desde la Biblioteca Central de la Universidad de Concepción.'
     },
 
     about: {
@@ -135,6 +142,7 @@ export const dict = {
       masterclass: 'Masterclass',
       agenda: 'Agenda',
       aliados: 'Partners',
+      streaming: 'Live',
       menuAria: 'Navigation',
       langAria: 'Change language'
     },
@@ -145,6 +153,12 @@ export const dict = {
       dates: 'June 15–18, 2026',
       venue: 'Central Library, Universidad de Concepción',
       scrollHint: 'Scroll to explore'
+    },
+
+    streaming: {
+      pill: '● Live stream',
+      title: 'Watch the event live',
+      description: 'Tune in to the live broadcast of City Science Biobío 2026 from the Central Library at Universidad de Concepción.'
     },
 
     about: {
@@ -250,6 +264,7 @@ export const dict = {
       masterclass: 'Masterclass',
       agenda: 'Programm',
       aliados: 'Partner',
+      streaming: 'Live',
       menuAria: 'Navigation',
       langAria: 'Sprache wechseln'
     },
@@ -260,6 +275,12 @@ export const dict = {
       dates: '15.–18. Juni 2026',
       venue: 'Zentralbibliothek, Universidad de Concepción',
       scrollHint: 'Scrollen und entdecken'
+    },
+
+    streaming: {
+      pill: '● Live-Übertragung',
+      title: 'Verfolgen Sie das Event live',
+      description: 'Schalten Sie ein zur Live-Übertragung von City Science Biobío 2026 aus der Zentralbibliothek der Universidad de Concepción.'
     },
 
     about: {
