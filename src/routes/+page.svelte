@@ -8,13 +8,14 @@
   import Partners from '$lib/components/Partners.svelte';
   import AnimatedSvg from '$lib/components/AnimatedSvg.svelte';
   import RadialNav from '$lib/components/RadialNav.svelte';
+  import EventHub from "$lib/components/EventHub.svelte";
 </script>
 
 <RadialNav />
 
 <main>
   <Hero />
-  <Streaming />
+  <!-- <Streaming /> -->
   <About />
   <AnimatedSvg preset="aboutProjects" />
   <Projects />

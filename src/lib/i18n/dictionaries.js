@@ -20,6 +20,7 @@ export const dict = {
       agenda: 'Agenda',
       aliados: 'Aliados',
       streaming: 'En Vivo',
+      hub: 'Hub',
       menuAria: 'Navegación',
       langAria: 'Cambiar idioma'
     },
@@ -36,6 +37,20 @@ export const dict = {
       pill: '● Transmisión en vivo',
       title: 'Sigue el evento en vivo',
       description: 'Conecta con la transmisión en directo de City Science Biobío 2026 desde la Biblioteca Central de la Universidad de Concepción.'
+    },
+
+    hub: {
+      sectionLabel: '● Hub del evento',
+      title: 'Todo el evento, en un solo lugar',
+      intro: 'Accede en tiempo real a la transmisión, el programa, las plataformas y los recursos para vivir City Science Biobío.',
+      resources: {
+        stream:   { title: 'Transmisión en vivo', desc: 'Sigue las jornadas en directo desde la Biblioteca UdeC.' },
+        register: { title: 'Inscripción',         desc: 'Reserva tu cupo para las visitas guiadas y la Masterclass.' },
+        program:  { title: 'Programa',            desc: 'Revisa la agenda día a día, del 15 al 18 de junio.' },
+        venue:    { title: 'Cómo llegar',         desc: 'Biblioteca Central, Universidad de Concepción.' },
+        data:     { title: 'Catálogo de datos',   desc: 'Explora DataScope y los datos territoriales abiertos del Biobío.' },
+        press:    { title: 'Prensa y medios',     desc: 'Descarga el kit de prensa, logos e imágenes del evento.' }
+      }
     },
 
     about: {
@@ -143,6 +158,7 @@ export const dict = {
       agenda: 'Agenda',
       aliados: 'Partners',
       streaming: 'Live',
+      hub: 'Hub',
       menuAria: 'Navigation',
       langAria: 'Change language'
     },
@@ -159,6 +175,20 @@ export const dict = {
       pill: '● Live stream',
       title: 'Watch the event live',
       description: 'Tune in to the live broadcast of City Science Biobío 2026 from the Central Library at Universidad de Concepción.'
+    },
+
+    hub: {
+      sectionLabel: '● Event hub',
+      title: 'The whole event, in one place',
+      intro: 'Get real-time access to the livestream, the program, the platforms and everything you need to experience City Science Biobío.',
+      resources: {
+        stream:   { title: 'Live stream',    desc: 'Follow the sessions live from the UdeC Library.' },
+        register: { title: 'Registration',   desc: 'Reserve your spot for the guided tours and the Masterclass.' },
+        program:  { title: 'Program',        desc: 'Browse the day-by-day agenda, June 15–18.' },
+        venue:    { title: 'Getting there',  desc: 'Central Library, Universidad de Concepción.' },
+        data:     { title: 'Data catalog',   desc: 'Explore DataScope and Biobío\'s open territorial data.' },
+        press:    { title: 'Press & media',  desc: 'Download the press kit, logos and event imagery.' }
+      }
     },
 
     about: {
@@ -265,6 +295,7 @@ export const dict = {
       agenda: 'Programm',
       aliados: 'Partner',
       streaming: 'Live',
+      hub: 'Hub',
       menuAria: 'Navigation',
       langAria: 'Sprache wechseln'
     },
@@ -281,6 +312,20 @@ export const dict = {
       pill: '● Live-Übertragung',
       title: 'Verfolgen Sie das Event live',
       description: 'Schalten Sie ein zur Live-Übertragung von City Science Biobío 2026 aus der Zentralbibliothek der Universidad de Concepción.'
+    },
+
+    hub: {
+      sectionLabel: '● Event-Hub',
+      title: 'Das ganze Event an einem Ort',
+      intro: 'Greifen Sie in Echtzeit auf den Livestream, das Programm, die Plattformen und alle Ressourcen rund um City Science Biobío zu.',
+      resources: {
+        stream:   { title: 'Livestream',      desc: 'Verfolgen Sie die Veranstaltungstage live aus der UdeC-Bibliothek.' },
+        register: { title: 'Anmeldung',       desc: 'Sichern Sie sich Ihren Platz für die Rundgänge und die Masterclass.' },
+        program:  { title: 'Programm',        desc: 'Sehen Sie sich das Tagesprogramm vom 15.–18. Juni an.' },
+        venue:    { title: 'Anfahrt',         desc: 'Zentralbibliothek, Universidad de Concepción.' },
+        data:     { title: 'Datenkatalog',    desc: 'Entdecken Sie DataScope und die offenen Geodaten der Region Biobío.' },
+        press:    { title: 'Presse & Medien', desc: 'Laden Sie das Pressekit, Logos und Bildmaterial herunter.' }
+      }
     },
 
     about: {

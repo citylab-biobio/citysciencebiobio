@@ -85,11 +85,13 @@ src/
 │       ├── Nav.svelte         # ⚠️ legacy top nav — currently unused (not imported anywhere)
 │       ├── RadialNav.svelte    # Floating radial nav + language switcher (the nav actually used)
 │       ├── Hero.svelte         # Landing hero: canvas circuit animation + scroll-revealed SVG bar
+│       ├── Streaming.svelte      # YouTube livestream embed (responsive 16:9)
 │       ├── About.svelte         # "Quiénes somos" + parallax image + "Concepto" split section
 │       ├── AnimatedSvg.svelte    # Generic scroll-revealed SVG component (see decorations.js)
 │       ├── Projects.svelte        # Stacked-card scroll-through of the 7 CLBB projects
 │       ├── Schedule.svelte         # Masterclass cinematic scroll sequence + closing shot
 │       ├── Agenda.svelte            # 3-day expo schedule (day cards)
+│       ├── EventHub.svelte           # ⚠️ "Resources & links" launchpad — built but NOT wired into the page yet
 │       └── Partners.svelte           # Sponsors/partners logo wall + site footer
 └── routes/
     ├── +layout.js            # prerender = true, ssr = false
@@ -142,7 +144,7 @@ Custom-built, no library — three locales: **`es`** (default), **`en`**, **`de`
   - `resolveLocale(cookieValue, acceptLanguage)` — a valid `lang` cookie always wins; otherwise falls back to header detection
 
 - **`src/lib/i18n/dictionaries.js`**
-  - Single `dict` export with `dict.es / dict.en / dict.de`, each namespaced by component/section: `meta`, `nav`, `hero`, `about`, `projects`, `schedule`, `agenda`, `partners`.
+  - Single `dict` export with `dict.es / dict.en / dict.de`, each namespaced by component/section: `meta`, `nav`, `hero`, `streaming`, `about`, `projects`, `schedule`, `agenda`, `hub`, `partners`.
   - Arrays preserve order for indexed content (e.g. `projects.descriptions[i]`, `agenda.days[i]`).
   - Keys ending in `Html` contain trusted inline markup (`<strong>`, `<br/>`) and are rendered with Svelte's `{@html ...}`.
   - Brand names, proper nouns (Concepción, Talcahuano, San Pedro de la Paz, MIT Media Lab, CityScope, etc.), URLs, hex accent colors, and time slots are **not** translated — they live alongside the data in the component files, not in the dictionary.
@@ -264,6 +266,7 @@ Composes the whole page, in order:
 <RadialNav />
 <main>
   <Hero />
+  <Streaming />
   <About />
   <AnimatedSvg preset="aboutProjects" />
   <Projects />
@@ -273,14 +276,16 @@ Composes the whole page, in order:
 </main>
 ```
 
+> **Not yet composed:** `EventHub.svelte` is finished but deliberately **not** imported here (and has no `RadialNav` link) to avoid a dead `#hub` anchor — see [Known issues / open items](#known-issues--open-items).
+
 ### `RadialNav.svelte`
 
 The site's only active navigation. A floating circular button (bottom-right)
-that expands into a radial arrangement of section links (`#aliados`,
-`#agenda`, `#programa`, `#proyectos`, `#quienes`, `#inicio`), positioned via
-trigonometry (`Math.sin`/`Math.cos` around a 90° arc) so each pill points
-outward from the trigger. Includes the **ES / EN / DE language switcher**.
-Clicking a link smooth-scrolls to the section via `scrollIntoView`.
+that expands into a radial arrangement of section links (`#streaming`,
+`#aliados`, `#agenda`, `#programa`, `#proyectos`, `#quienes`, `#inicio`),
+positioned via trigonometry (`Math.sin`/`Math.cos` around a 90° arc) so each
+pill points outward from the trigger. Includes the **ES / EN / DE language
+switcher**. Clicking a link smooth-scrolls to the section via `scrollIntoView`.
 
 ### `Hero.svelte`
 
@@ -288,6 +293,15 @@ Clicking a link smooth-scrolls to the section via `scrollIntoView`.
 - `<canvas>` background: a continuously animated field of pulsing dots/lines ("circuit board" aesthetic), yellow or gray, regenerated on resize via `ResizeObserver`.
 - `barra.svg` is fetched, inlined (rotated 180°), and its `line`/`circle` elements reveal progressively as the user scrolls through the pin zone, then the whole bar fades + drifts right as the hero releases.
 - Event title image, tagline (`{@html}`), event dates & venue, and a bouncing "scroll hint" arrow — all localized.
+
+### `Streaming.svelte`
+
+The event livestream, placed just after the hero (`id="streaming"`). A
+localized `section-label` + title + intro above a responsive **16:9 YouTube
+embed** (`padding-top: 56.25%` wrapper with an absolutely-positioned `<iframe>`).
+The video ID is a hardcoded constant in the component (`RsoWuDxilww` →
+`youtube.com/embed/<id>`); swap it to point at a different stream. Copy lives in
+`dict.*.streaming`.
 
 ### `About.svelte`
 
@@ -326,6 +340,23 @@ A 3-day guided-tour schedule (June 16–18) as three glass-morphism `day-card`s,
 each with a weekday/theme header, target-audience + objective text, a grid of
 time slots, and a "Register →" CTA linking to a per-day Google Form. On mobile,
 a horizontal day-tab selector shows one card at a time.
+
+### `EventHub.svelte` ⚠️ not yet wired
+
+A "resources & links" launchpad (`id="hub"`) — a responsive auto-fill grid of
+glass cards, each linking to a key event resource (livestream, registration,
+program, venue/map, data catalog, press kit). Each card pairs an inline stroke
+icon with a localized title/description and a directional arrow (`↗` external,
+`→` internal). Cards reveal with a staggered `IntersectionObserver` fade-in
+(opacity + lift) and highlight (border/glow) on hover — the two effects are kept
+on separate CSS properties so they never conflict.
+
+Resource metadata (href, icon, `external` flag) lives in the component; copy
+lives in `dict.*.hub.resources`, keyed by resource name. **This component is
+finished but intentionally NOT rendered yet** — it is not imported in
+`+page.svelte` and has no `RadialNav` entry (the `nav.hub` label already exists
+in the dictionary). Several resource hrefs are `#` placeholders awaiting real
+URLs. See [Known issues / open items](#known-issues--open-items).
 
 ### `Partners.svelte`
 
@@ -417,6 +448,7 @@ Notes:
 
 ## Known issues / open items
 
+- `EventHub.svelte` is built but **intentionally not wired in** — not imported in `+page.svelte`, no `RadialNav` link (to avoid a dead `#hub` anchor). To activate: add `<EventHub />` to `+page.svelte` and `{ href: '#hub', key: 'hub' }` to the `sections` array in `RadialNav.svelte`. Before going live, fill the placeholder `#` hrefs in its `resources` array (registration, venue/map, data catalog, press kit).
 - `Nav.svelte` is unused dead code (hardcoded Spanish, not i18n-aware) — kept in the repo but not imported by `+page.svelte`.
 - The `scheduleDivider` `AnimatedSvg` preset is defined but currently unused (its usage in `Schedule.svelte` is commented out).
 - `app.html`'s `og:url` (`cityscience.biobio.cl`) may not match the actual production domain (`cityscience.citylabbiobio.cl`) — verify before relying on either for SEO/sharing.
