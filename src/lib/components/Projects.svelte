@@ -80,7 +80,7 @@
       name: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142449/Community-Scope-scaled.png',
       accent: '#ffcc05',
-      link: 'https://community.citylabbiobio.cl' // TODO: add project URL
+      link: 'https://youtu.be/dXba2RFf41Q' // TODO: add project URL
     }
   ];
 </script>

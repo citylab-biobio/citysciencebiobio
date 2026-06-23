@@ -6,6 +6,7 @@
   import Schedule from '$lib/components/Schedule.svelte';
   import Agenda from '$lib/components/Agenda.svelte';
   import Partners from '$lib/components/Partners.svelte';
+  import Gallery from '$lib/components/Gallery.svelte';
   import AnimatedSvg from '$lib/components/AnimatedSvg.svelte';
   import RadialNav from '$lib/components/RadialNav.svelte';
   import EventHub from "$lib/components/EventHub.svelte";
@@ -15,11 +16,12 @@
 
 <main>
   <Hero />
-  <!-- <Streaming /> -->
   <About />
   <AnimatedSvg preset="aboutProjects" />
   <Projects />
   <Schedule />
-  <Agenda />
+  <Gallery />
+  <!--decomissioned <Agenda /> -->
+  <Streaming />
   <Partners />
 </main>

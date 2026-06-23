@@ -101,6 +101,12 @@ export const dict = {
       closeVenue: 'Biblioteca UdeC'
     },
 
+    gallery: {
+      sectionLabel: 'Galería',
+      titleHtml: 'Cuatro años<br/>en imágenes',
+      intro: 'Un recorrido visual por Expo City Science Biobío 2026'
+    },
+
     agenda: {
       sectionLabel: '● Visitas guiadas - Cupos limitados por día',
       publicoObjetivo: 'Público objetivo',
@@ -239,6 +245,12 @@ export const dict = {
       closeVenue: 'UdeC Library'
     },
 
+    gallery: {
+      sectionLabel: 'Gallery',
+      titleHtml: 'Four years<br/>in pictures',
+      intro: 'A visual tour through City Science Biobío Expo.'
+    },
+
     agenda: {
       sectionLabel: '● Guided tours — Limited places per day',
       publicoObjetivo: 'Audience',
@@ -374,6 +386,12 @@ export const dict = {
         'Urbane Technologie mit Wirkung: Vier Jahre angewandte Stadtforschung in Biobío — vom MIT Media Lab bis zu den raumbezogenen Datenplattformen des CLBB.',
       closeTime: '16.–18. Juni',
       closeVenue: 'Bibliothek der UdeC'
+    },
+
+    gallery: {
+      sectionLabel: '● Galerie',
+      titleHtml: 'Vier Jahre<br/>in Bildern',
+      intro: 'Ein visueller Rundgang durch die City Science Biobío Expo.'
     },
 
     agenda: {
