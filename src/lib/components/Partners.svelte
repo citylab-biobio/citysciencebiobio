@@ -92,7 +92,7 @@
         </div>
       </div>
 
-      <!-- Patrocinio row -->
+      <!-- Patrocinio row
       <div class="wall-row">
         <span class="row-label">{$t.partners.patrocina}</span>
         <div class="row-cells">
@@ -107,6 +107,7 @@
           {/each}
         </div>
       </div>
+      -->
 
       <!-- Media row -->
       <div class="wall-row">
