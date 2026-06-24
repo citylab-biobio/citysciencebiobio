@@ -17,11 +17,11 @@
 <main>
   <Hero />
   <About />
+  <Gallery />
+  <Streaming />
   <AnimatedSvg preset="aboutProjects" />
   <Projects />
-  <Schedule />
-  <Gallery />
-  <!--decomissioned <Agenda /> -->
-  <Streaming />
+  <!-- <Schedule />-->
+  <!-- <Agenda /> -->
   <Partners />
 </main>

@@ -14,7 +14,7 @@
   // Masterclass copy lives in the i18n dictionary ($t.schedule.masterclass).
   // Only the non-textual registration link stays here.
   const MASTERCLASS_LINK =
-    'https://docs.google.com/forms/d/e/1FAIpQLSeZebu6M_XhaHywPAalQmkijtbEwp1G0YHiBepzT269Yy48UA/viewform?usp=publish-editor';
+    'https://www.youtube.com/live/RsoWuDxilww?si=yhCYW-eqZ-CukouM&t=1046';
 
   let sectionEl, videoEl, mountainEl;
   let footerEls = [];

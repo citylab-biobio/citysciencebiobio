@@ -30,7 +30,7 @@
       name: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142328/CLBB-12-scaled.jpg',
       accent: '#ffcb05',
-      link: '' // TODO: add project URL
+      link: 'https://youtu.be/1CKeudtLJTs?si=ULzTt3dSikpRLJrG'
     },
     {
       logo: 'https://citylabbiobio.cl/wp-content/uploads/2026/05/visor-trafico_fondo-oscuro.svg',
@@ -38,7 +38,7 @@
       name: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142940/01-1-scaled.png',
       accent: '#ffcc05',
-      link: 'https://visor.citylabbiobio.cl' // TODO: add project URL
+      link: 'https://visor.citylabbiobio.cl'
     },
     {
       logo: 'https://citylabbiobio.cl/wp-content/uploads/2026/05/cportuaria_fondo-oscuro.svg',
@@ -46,7 +46,7 @@
       name: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142349/tablet.png',
       accent: '#ffcc05',
-      link: '' // TODO: add project URL
+      link: ''
     },
     {
       logo: 'https://citylabbiobio.cl/wp-content/uploads/2026/05/visor-incendios_fondo-oscuro.svg',
@@ -54,7 +54,7 @@
       name: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142742/01-scaled.png',
       accent: '#ffcc05',
-      link: 'https://reporteincendios.citylabbiobio.cl' // TODO: add project URL
+      link: 'https://reporteincendios.citylabbiobio.cl'
     },
     {
       logo: 'https://citylabbiobio.cl/wp-content/uploads/2026/05/metropolitan_fondo-oscuro.svg',
@@ -63,7 +63,7 @@
       sub: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142625/MSB-6-scaled.png',
       accent: '#ffcc05',
-      link: '' // TODO: add project URL
+      link: ''
     },
     {
       logo: 'https://d26q11cgz8q0ri.cloudfront.net/2026/06/04121644/DataScope_fondo-negro-scaled.png',
@@ -72,7 +72,7 @@
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28170425/DataIS-Ckan.png',
       imgPos: '35% center',
       accent: '#ffcc05',
-      link: 'https://datascope.citylabbiobio.cl' // TODO: add project URL
+      link: 'https://datascope.citylabbiobio.cl'
     },
     {
       logo: 'https://d26q11cgz8q0ri.cloudfront.net/2026/06/04121425/community-scaled.png',
@@ -80,7 +80,7 @@
       name: '',
       img: 'https://d26q11cgz8q0ri.cloudfront.net/2026/05/28142449/Community-Scope-scaled.png',
       accent: '#ffcc05',
-      link: 'https://youtu.be/dXba2RFf41Q' // TODO: add project URL
+      link: 'https://youtu.be/dXba2RFf41Qch'
     }
   ];
 </script>

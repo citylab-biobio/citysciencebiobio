@@ -9,7 +9,7 @@
   const sections = [
     { href: '#streaming', key: 'streaming'   },
     { href: '#aliados',   key: 'aliados'     },
-    { href: '#agenda',    key: 'agenda'      },
+    { href: '#galeria',    key: 'galeria'      },
     { href: '#programa',  key: 'masterclass' },
     { href: '#proyectos', key: 'proyectos'   },
     { href: '#quienes',   key: 'nosotros'    },
