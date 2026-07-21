@@ -21,7 +21,7 @@
   <Streaming />
   <AnimatedSvg preset="aboutProjects" />
   <Projects />
-  <!-- <Schedule />-->
-  <!-- <Agenda /> -->
+  <Schedule />
+  <Agenda />
   <Partners />
 </main>

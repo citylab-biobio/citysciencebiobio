@@ -1,4 +1,522 @@
+# City Science Biobío 2026 {#city-science-biobío-2026-es}
+
+**[English](#city-science-biobío-2026) | [Español](#city-science-biobío-2026-es)**
+
+Landing page de **City Science Biobío 2026**, el evento público organizado por
+**City Lab Biobío (CLBB)**, afiliado al grupo **MIT Media Lab / MIT City
+Science**. El evento se realiza del **15 al 18 de junio de 2026** en la
+Biblioteca Central de la Universidad de Concepción, Chile, y exhibe cuatro años
+de proyectos de tecnología urbana de CLBB (CityScope, DataScope,
+CommunityScope, Metropolitan Scope Biobío, visores de tránsito/incendios,
+plataformas portuarias, entre otros) ante gobierno, academia y público general.
+
+El sitio es una página larga de scroll único construida en torno a secuencias
+de animación cinematográficas controladas por el scroll, completamente
+traducida al **español, inglés y alemán**.
+
+---
+
+## Tabla de contenidos
+
+- [Stack tecnológico](#stack-tecnológico)
+- [Por qué SvelteKit](#por-qué-sveltekit)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Arquitectura](#arquitectura)
+  - [Modo de renderizado](#modo-de-renderizado)
+  - [Internacionalización (i18n)](#internacionalización-i18n)
+  - [Scroll suave (Lenis)](#scroll-suave-lenis)
+  - [Patrón de animación por scroll](#patrón-de-animación-por-scroll)
+  - [Sistema AnimatedSvg](#sistema-animatedsvg)
+- [Páginas y componentes](#páginas-y-componentes)
+- [Estilos / sistema de diseño](#estilos--sistema-de-diseño)
+- [Recursos estáticos](#recursos-estáticos)
+- [Infraestructura y despliegue](#infraestructura-y-despliegue)
+- [Desarrollo local](#desarrollo-local)
+- [Problemas conocidos / pendientes](#problemas-conocidos--pendientes)
+
+---
+
+## Stack tecnológico
+
+| Capa | Elección | Notas |
+|---|---|---|
+| Framework | **SvelteKit 2** + **Svelte 4.2** | Compila a JS vanilla, sin virtual DOM |
+| Bundler / servidor de desarrollo | **Vite 5** | vía `@sveltejs/vite-plugin-svelte` |
+| Adaptador | **`@sveltejs/adapter-static`** | Exportación completamente estática (`prerender = true`, `ssr = false`) |
+| Scroll suave | **Lenis 1.1** | Inicializado globalmente en `+layout.svelte` |
+| Animación | Loops **RAF + `getBoundingClientRect()`** hechos a mano | Sin GSAP / ScrollTrigger — se mantiene compatible con Lenis |
+| i18n | i18n propio y liviano (sin librería) | ES / EN / DE, detección por cookie + `Accept-Language` |
+| Hosting | **AWS Amplify** (hosting estático/CDN) | build a partir de `amplify.yml` |
+| CDN de medios | **CloudFront** (`d26q11cgz8q0ri.cloudfront.net`) | todas las imágenes y videos |
+| Tipografías | **Chalet** y **DobraSlab** licenciadas, servidas desde `assets.citylabbiobio.cl` | `@font-face` en `src/app.css` |
+| Analítica | Google tag (gtag.js) | inyectado directamente en `src/app.html` |
+
+### Por qué este stack
+
+- `npm install --legacy-peer-deps` es necesario (Svelte 4 + algunos desajustes de peer-deps en el ecosistema del adaptador).
+- Sin framework CSS — todo es CSS escrito a mano usando un pequeño set de tokens de diseño (custom properties CSS) y clases utilitarias (`.glass`, `.pill`, `.section-title`, etc.).
+
+---
+
+## Por qué SvelteKit
+
+Este proyecto evita deliberadamente un framework más pesado (React/Next, Vue/Nuxt) por razones concretas que importan para una landing page de marketing/evento:
+
+- **Framework de tiempo de compilación, no de runtime.** Los componentes de Svelte compilan a funciones imperativas de actualización del DOM, pequeñas — no hay diffing de virtual DOM en runtime. Para una página que es mayormente contenido estático con animaciones de scroll personalizadas, esto significa menos JS enviado y menos overhead compitiendo con los loops de animación RAF.
+- **Primitivas reactivas realmente reactivas, sin boilerplate.** Las declaraciones reactivas `$:` y los stores de Svelte (`writable`/`derived`) hacen que la capa de i18n (`locale` → diccionario `derived`) y el estado de animación por componente (`elR`, `cardStyles`, `progress`, etc.) sean triviales de conectar — sin manejo de arrays de dependencias de `useState`/`useMemo`/`useEffect`.
+- **CSS con scope por defecto.** Cada bloque `<style>` de un componente tiene scope automático, lo que hace manejable el diseño por componente del proyecto (Hero, Schedule, Projects, cada uno con lenguajes visuales muy distintos) sin necesidad de una convención de nombres CSS como BEM, y sin el costo de runtime de CSS-in-JS.
+- **`adapter-static` → salida verdaderamente estática.** Todo el sitio se prerenderiza a HTML/CSS/JS plano (`ssr = false`, `prerender = true`), por lo que puede servirse desde cualquier host/CDN estático (en este caso, AWS Amplify) sin runtime de servidor, cold starts casi nulos y escalamiento trivial para un evento con picos de tráfico.
+- **El tamaño del bundle importa aquí.** La página tiene mucho contenido animado y multimedia (video, imágenes grandes de hero, múltiples SVGs). La falta de overhead de runtime de framework en Svelte deja más presupuesto para el contenido real y el código de animación de canvas/SVG.
+- **Fácil interoperabilidad con APIs nativas del navegador.** Lenis, `IntersectionObserver`, `ResizeObserver`, `fetch`+`DOMParser` para inlinear SVGs, `<canvas>` — todo esto es JS plano dentro de `onMount()`, sin que ninguna abstracción específica de framework se interponga.
+
+---
+
+## Estructura del proyecto
+
+```
+src/
+├── app.html                  # Shell HTML — meta tags, preconnect de fuentes, gtag, placeholder %lang%
+├── app.css                   # Estilos globales, tokens de diseño (vars CSS), @font-face, clases utilitarias
+├── hooks.server.js           # Resuelve el locale por request, escribe <html lang> + SEO meta (solo en build)
+├── lib/
+│   ├── decorations.js        # Registro de presets de <AnimatedSvg>
+│   ├── partners.js           # Datos de "Invitan" partners/sponsors (logos)
+│   ├── i18n/
+│   │   ├── index.js          # LOCALES, detectFromHeader(), resolveLocale()
+│   │   └── dictionaries.js    # Todo el copy, agrupado por componente, para es/en/de
+│   └── components/
+│       ├── Nav.svelte         # ⚠️ nav superior legado — actualmente sin uso (no se importa en ningún lado)
+│       ├── RadialNav.svelte    # Nav radial flotante + selector de idioma (el nav que realmente se usa)
+│       ├── Hero.svelte         # Hero principal: animación de canvas tipo circuito + barra SVG revelada por scroll
+│       ├── Streaming.svelte      # Embed del livestream de YouTube (responsive 16:9)
+│       ├── About.svelte         # "Quiénes somos" + imagen con parallax + sección dividida "Concepto"
+│       ├── AnimatedSvg.svelte    # Componente genérico de SVG revelado por scroll (ver decorations.js)
+│       ├── Projects.svelte        # Scroll apilado de los 7 proyectos de CLBB
+│       ├── Schedule.svelte         # Secuencia cinematográfica de la masterclass + cierre
+│       ├── Agenda.svelte            # Agenda de la expo de 3 días (tarjetas por día)
+│       ├── EventHub.svelte           # ⚠️ Launchpad de "recursos y links" — construido pero SIN conectar aún a la página
+│       └── Partners.svelte           # Muro de logos de sponsors/partners + footer del sitio
+└── routes/
+    ├── +layout.js            # prerender = true, ssr = false
+    ├── +layout.server.js     # pasa el locale resuelto al cliente
+    ├── +layout.svelte        # import de CSS global, contexto de i18n, init de Lenis
+    └── +page.svelte          # compone todas las secciones en orden
+
+static/
+├── assets/                   # SVGs (favicon, line art decorativo, logos, patrones)
+├── *.otf / *.ttf              # Tipografías licenciadas (ignoradas en git — agregar manualmente para dev local)
+└── .DS_Store
+
+amplify.yml                   # Especificación de build de AWS Amplify
+svelte.config.js              # Config de adapter-static (pages/assets → build/, fallback index.html)
+vite.config.js                # Plugin de Vite para SvelteKit
+.github/workflows/notify-fork.yml  # Al hacer push a master, dispara un evento hacia un fork de sincronización
+```
+
+---
+
+## Arquitectura
+
+### Modo de renderizado
+
+`src/routes/+layout.js`:
+
+```js
+export const prerender = true;
+export const ssr = false;
+```
+
+Todo el sitio se **prerenderiza a HTML estático en tiempo de build** y luego
+hace hydrate como una SPA del lado del cliente (`ssr = false`). Esto es
+necesario para `adapter-static` / el hosting estático de AWS Amplify — no hay
+servidor Node en producción.
+
+Como no hay servidor en runtime, `src/hooks.server.js` solo se ejecuta
+**durante el paso de prerender del build**, no por cada visita real. Aun así
+cumple un propósito: escribe el atributo `<html lang="...">` y los meta tags
+de SEO (`<meta description>` / `og:description`) en el HTML estático usando el
+locale que se resuelva en tiempo de build (sin cookie ni header
+`Accept-Language` presentes en build → siempre cae en `es`).
+
+### Internacionalización (i18n)
+
+Construido a medida, sin librería — tres locales: **`es`** (por defecto),
+**`en`**, **`de`**.
+
+- **`src/lib/i18n/index.js`**
+  - `LOCALES = ['es', 'en', 'de']`, `DEFAULT_LOCALE = 'es'`
+  - `detectFromHeader(acceptLanguage)` — parsea un string `Accept-Language` y hace match con el primer prefijo `en-`/`es-`/`de-`
+  - `resolveLocale(cookieValue, acceptLanguage)` — una cookie `lang` válida siempre gana; si no, se hace fallback a la detección por header
+
+- **`src/lib/i18n/dictionaries.js`**
+  - Un único export `dict` con `dict.es / dict.en / dict.de`, cada uno agrupado por componente/sección: `meta`, `nav`, `hero`, `streaming`, `about`, `projects`, `schedule`, `agenda`, `hub`, `partners`.
+  - Los arrays preservan el orden para contenido indexado (por ejemplo, `projects.descriptions[i]`, `agenda.days[i]`).
+  - Las claves que terminan en `Html` contienen markup inline confiable (`<strong>`, `<br/>`) y se renderizan con `{@html ...}` de Svelte.
+  - Nombres de marca, nombres propios (Concepción, Talcahuano, San Pedro de la Paz, MIT Media Lab, CityScope, etc.), URLs, colores hex de acento y horarios **no** se traducen — viven junto a los datos en los archivos de los componentes, no en el diccionario.
+
+- **`src/hooks.server.js`**
+  - Lee la cookie `lang` + el header `Accept-Language`, resuelve un locale, lo guarda en `event.locals.locale`, y reescribe los placeholders `%lang%`, `%meta_description%`, `%og_description%` en `app.html` vía `transformPageChunk`.
+
+- **`src/routes/+layout.server.js`** → pasa el `locale` al cliente vía `load()`.
+
+- **`src/routes/+layout.svelte`**
+  - Crea un store `writable(data.locale)` por render (`locale`) y un store `derived` `t = derived(locale, $l => dict[$l] ?? dict.es)`.
+  - Expone `{ locale, t, setLocale }` vía `setContext('i18n', ...)`.
+  - `setLocale(next)` actualiza el store, escribe una cookie `lang` de 1 año (`samesite=lax`), y actualiza `document.documentElement.lang`.
+
+- **Patrón de consumo** (en cada componente):
+  ```js
+  const { t } = getContext('i18n');
+  ```
+  ```svelte
+  <h2>{$t.about.pill}</h2>
+  <p>{@html $t.about.leadHtml}</p>
+  ```
+
+- **Selector de idioma**: un pequeño pill `ES | EN | DE` dentro de
+  **`RadialNav.svelte`**, mostrado sobre el botón que activa el menú radial. El
+  idioma activo aparece apagado/no clickeable; los idiomas inactivos se
+  renderizan como pills amarillos.
+
+> **Agregar copy nuevo:** agregar la clave a **los tres** objetos de locale en
+> `dictionaries.js` y referenciarla vía `$t.<namespace>.<key>`. Nunca
+> hardcodear strings en español (ni en ningún idioma) directamente en un
+> componente.
+
+### Scroll suave (Lenis)
+
+Inicializado una sola vez, de forma global, en el `onMount` de
+`src/routes/+layout.svelte`:
+
+```js
+const lenis = new Lenis({
+  duration: 1.4,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // ease-out exponencial
+  orientation: 'vertical',
+  smoothWheel: true
+});
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+```
+
+Cada animación controlada por scroll en la app lee `getBoundingClientRect()`
+dentro de su propio loop `requestAnimationFrame` — **no** eventos de scroll —
+para mantenerse perfectamente sincronizada con la posición de scroll suavizada
+por Lenis.
+
+### Patrón de animación por scroll
+
+**No hay GSAP / ScrollTrigger** en ninguna parte del proyecto. Cada sección
+animada sigue el mismo patrón escrito a mano:
+
+```js
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+const easeOutExpo  = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
+// dentro de onMount, en un loop RAF:
+const rect = el.getBoundingClientRect();
+const p = clamp(/* progreso 0 → 1 basado en rect + altura del viewport */);
+someReactiveVar = easeOutCubic(p); // o easeOutExpo
+```
+
+- `easeOutCubic` se usa para todo lo que debe **seguir el propio easing de
+  Lenis** (secuencias fijas/largas) — se mantiene visualmente "pegado" a la
+  barra de scroll.
+- `easeOutExpo` se usa para **revelados rápidos de una sola vez** (movimiento
+  cargado al inicio) — se usa con moderación, ya que puede pelear contra la
+  sensación de smooth-scroll si se abusa de él.
+
+Todo el estado de animación son variables reactivas de Svelte planas
+(`let x = 0`), actualizadas de forma imperativa dentro de un loop
+`requestAnimationFrame` por componente, iniciado en `onMount` y cancelado en
+el cleanup.
+
+Este patrón aparece, con ajustes específicos por sección, en:
+
+- **`Hero.svelte`** — fondo de canvas tipo "placa de circuito" (loop de pulso independiente) + una barra SVG revelada/desvanecida por scroll (`barra.svg`), fijada mediante un wrapper de 220vh / hero con `position: sticky`.
+- **`About.svelte`** — imagen con parallax (`STRENGTH = 0.25`) + un revelado de panel dividido "Concepto" (`easeOutCubic`).
+- **`Projects.svelte`** — una sección larga fijada (`100vh + (N-1) * SCROLL_PER_CARD`) donde 7 tarjetas de proyecto animan a través de una transición de tarjetas apiladas con efecto 3D, controlada por un único valor `progress` (0→1).
+- **`Schedule.svelte`** — la secuencia más elaborada: una sección fijada de `100vh + 3200px` (`4200px` en mobile) donde un pequeño frame de video se expande hacia casi pantalla completa a medida que se hace scroll, un overlay florece con blur de fondo, y 6 elementos de texto aparecen en cascada sobre curvas con offset individual. Seguido por un revelado de cita en el footer, el logo de CLBB (vía `AnimatedSvg`), y un "closing shot" (fade-in de foto del recinto + SVG decorativo + etiqueta).
+- **`AnimatedSvg.svelte`** — ver más abajo.
+- **`Partners.svelte`** — fade-in simple basado en `IntersectionObserver` para la foto de fondo.
+
+### Sistema AnimatedSvg
+
+`src/lib/components/AnimatedSvg.svelte` es un componente genérico que:
+
+1. Hace `fetch()` de un archivo SVG crudo y lo inserta en el DOM vía
+   `DOMParser` (quitando tags `<script>` y atributos `on*` por seguridad).
+2. Lee el bounding box (`getBBox()`) de cada elemento de forma, ordenándolos
+   a lo largo de un eje (horizontal o vertical, ascendente o descendente
+   según `direction`).
+3. Pre-muestra una fracción aleatoria `prerender` de elementos de inmediato
+   (sus animaciones de pulso CSS corren libremente).
+4. Revela el resto uno por uno (alternando `opacity`) a medida que el
+   componente entra en el viewport, a lo largo de una fracción `reveal` de la
+   altura del viewport — controlado por el mismo patrón RAF +
+   `getBoundingClientRect()` que el resto del sitio.
+
+**Props:**
+
+| Prop | Tipo | Default | Descripción |
+|---|---|---|---|
+| `preset` | `string \| null` | `null` | Clave dentro del registro `decorations` |
+| `override` | `object` | `{}` | Overrides por instancia, fusionados sobre el preset |
+
+**Campos de configuración** (preset u override): `src`, `direction` (`'ltr' \| 'rtl' \| 'ttb' \| 'btt'`), `width`, `prerender` (0–1), `reveal` (0–1, default `0.35`).
+
+**Presets registrados** (`src/lib/decorations.js`):
+
+| Preset | SVG | Dirección | Ancho | Prerender | Usado en |
+|---|---|---|---|---|---|
+| `aboutProjects` | `lateral.svg` | `rtl` | 60% | 0.3 | Entre las secciones About y Projects |
+| `scheduleDivider` | `lateral.svg` | `ltr` | 50% | 0.2 | ⚠️ Definido pero actualmente **sin uso** — el bloque divisor en Schedule está comentado |
+| `clbbLogo` | `logo-clbb02.svg` | `ttb` | 170px | 0.15 | Logo del footer de Schedule |
+| `tramaEncabezado` | `trama_encabezado.svg` | `ltr` | 100% | 0.1 (reveal 0.5) | "Mountain footer" de cierre de Schedule (oculto en mobile) |
+
+> **Advertencia de colisión de CSS:** los bloques `<style>` de los SVGs
+> inyectados se vuelven **globales al documento**. Dos SVGs que puedan
+> renderizarse en la misma página deben usar nombres de clase CSS únicos
+> dentro del markup del SVG. `logo-clbb02.svg` fue renombrado de `.cls-1` a
+> `.clbb-logo` por esta razón; `lateral.svg` usa `.cls-1`–`.cls-6`. Al agregar
+> un nuevo SVG decorativo, renombrar sus clases para evitar sobrescribir las
+> existentes.
+
+---
+
+## Páginas y componentes
+
+### `src/routes/+page.svelte`
+
+Compone toda la página, en orden:
+
+```
+<RadialNav />
+<main>
+  <Hero />
+  <Streaming />
+  <About />
+  <AnimatedSvg preset="aboutProjects" />
+  <Projects />
+  <Schedule />
+  <Agenda />
+  <Partners />
+</main>
+```
+
+> **Aún no compuesto:** `EventHub.svelte` está terminado pero deliberadamente
+> **no** se importa aquí (y no tiene link en `RadialNav`) para evitar un
+> anchor `#hub` muerto — ver [Problemas conocidos / pendientes](#problemas-conocidos--pendientes).
+
+### `RadialNav.svelte`
+
+La única navegación activa del sitio. Un botón circular flotante (abajo a la
+derecha) que se expande en una disposición radial de links a secciones
+(`#streaming`, `#aliados`, `#agenda`, `#programa`, `#proyectos`, `#quienes`,
+`#inicio`), posicionados mediante trigonometría (`Math.sin`/`Math.cos`
+alrededor de un arco de 90°) para que cada pill apunte hacia afuera desde el
+trigger. Incluye el **selector de idioma ES / EN / DE**. Al hacer clic en un
+link se hace scroll suave hacia la sección vía `scrollIntoView`.
+
+### `Hero.svelte`
+
+- Hero a pantalla completa fijado durante 220vh de scroll (`position: sticky` dentro de un wrapper alto).
+- Fondo `<canvas>`: un campo continuamente animado de puntos/líneas pulsantes (estética "placa de circuito"), amarillo o gris, regenerado al hacer resize vía `ResizeObserver`.
+- `barra.svg` se obtiene, se inserta (rotado 180°), y sus elementos `line`/`circle` se revelan progresivamente a medida que el usuario hace scroll por la zona fijada, luego toda la barra se desvanece + se desplaza hacia la derecha cuando el hero se libera.
+- Imagen del título del evento, tagline (`{@html}`), fechas y recinto del evento, y una flecha de "scroll hint" que rebota — todo localizado.
+
+### `Streaming.svelte`
+
+El livestream del evento, ubicado justo después del hero (`id="streaming"`).
+Una `section-label` localizada + título + intro sobre un **embed de YouTube
+responsive 16:9** (wrapper `padding-top: 56.25%` con un `<iframe>`
+posicionado absolutamente). El ID del video es una constante hardcodeada en el
+componente (`RsoWuDxilww` → `youtube.com/embed/<id>`); cambiarlo para apuntar
+a otro stream. El copy vive en `dict.*.streaming`.
+
+### `About.svelte`
+
+- Texto introductorio "¿Quiénes Somos?" (sticky, `position: sticky`) con logos de partners (desde `src/lib/partners.js` + MIT Media Lab).
+- Una foto con parallax a sangre completa (bordes difuminados arriba y abajo) con parallax de `translateY` de `STRENGTH = 0.25`.
+- Sección "Concepto": un split de dos columnas (desktop) con un divisor vertical animado que escala hacia adentro, el logo del evento, y copy de título/cuerpo que entra desde lados opuestos.
+
+### `Projects.svelte`
+
+Muestra los **7 proyectos** de CLBB (CityScope, visor de tránsito/accidentes,
+Ciudad Portuaria, visor de incendios forestales, Metropolitan Scope Biobío,
+DataScope, CommunityScope). Una sección larga fijada donde las tarjetas
+transicionan a través de un efecto de "profundidad" apilado:
+
+- La tarjeta 0 comienza centrada y visible.
+- Cada tarjeta siguiente se desliza desde abajo a la derecha mientras las tarjetas mostradas previamente se encogen/desplazan/desvanecen hacia una pila detrás de ella (`STACK_X`, `STACK_Y`, `SCALE_DECAY`, `ALPHA_DECAY`, con tope en `MAX_VISIBLE`).
+- Un contador de progreso (`01 / 07`) y puntos indicadores muestran qué tarjeta está "activa".
+- `SCROLL_PER_CARD` es `1300px` en desktop, `1700px` en mobile (recalculado al hacer resize).
+- En pantallas angostas (`≤600px`), las tarjetas cambian a un layout vertical (imagen arriba, texto abajo) y el logo inline reemplaza al logo de overlay.
+
+### `Schedule.svelte`
+
+La animación central — una secuencia cinematográfica tipo "masterclass"
+(oradora: **Naroa Coretti, Research Scientist, MIT Media Lab**):
+
+1. **Sección fijada** (`100vh + 3200px`, `4200px` en mobile): un pequeño frame de video (≈340×460px) (`movilidad.mp4`, precargado vía `<link rel="preload" as="video">`) se expande hacia casi pantalla completa a medida que el usuario hace scroll (`easeOutExpo`), oscureciéndose mientras crece.
+2. **Bloom de overlay**: una vez que el frame está mayormente expandido, un overlay oscuro difuminado se desvanece hacia adentro (`easeOutCubic`, sigue a Lenis), seguido de 6 elementos de texto (caption, título, subtítulo, dos párrafos de cuerpo, meta + link de registro) apareciendo en cascada sobre curvas con offset temporal individual (0.11 de separación).
+3. **Fase de espera**: todo permanece fijado y completamente visible hasta que se agota el presupuesto de scroll de la sección.
+4. **Footer**: una cita de cierre se desvanece/eleva/desenfoca hacia la vista, luego el logo de CLBB (`AnimatedSvg` preset `clbbLogo`).
+5. **Closing shot** (60vh): una foto del recinto (Biblioteca UdeC) se desvanece hacia adentro (bordes mezclados con máscara), un patrón decorativo (`tramaEncabezado`, solo desktop) se dibuja sobre ella, y una etiqueta final (fechas del evento + logo + recinto) se desvanece hacia adentro al final.
+
+Un bloque de comentario `TWEAK GUIDE` en el componente documenta exactamente
+qué constantes cambiar para retimear el bloom/stagger (offsets de
+inicio/fin, velocidad del backdrop, techo de blur, separación del stagger,
+velocidad por elemento).
+
+### `Agenda.svelte`
+
+Una agenda guiada de 3 días (16 al 18 de junio) como tres `day-card` con
+glassmorphism, cada una con un header de día de semana/tema, texto de público
+objetivo + objetivo, una grilla de horarios, y un CTA "Register →" que enlaza
+a un Google Form por día. En mobile, un selector horizontal de tabs por día
+muestra una tarjeta a la vez.
+
+### `EventHub.svelte` ⚠️ aún sin conectar
+
+Un launchpad de "recursos y links" (`id="hub"`) — una grilla auto-fill
+responsive de tarjetas de vidrio (glass), cada una enlazando a un recurso
+clave del evento (livestream, registro, programa, recinto/mapa, catálogo de
+datos, kit de prensa). Cada tarjeta combina un ícono de trazo inline con un
+título/descripción localizados y una flecha direccional (`↗` externo, `→`
+interno). Las tarjetas se revelan con un fade-in escalonado por
+`IntersectionObserver` (opacidad + elevación) y se destacan (borde/glow) al
+hacer hover — los dos efectos se mantienen en propiedades CSS separadas para
+que nunca entren en conflicto.
+
+Los metadatos de recursos (href, ícono, flag `external`) viven en el
+componente; el copy vive en `dict.*.hub.resources`, indexado por nombre de
+recurso. **Este componente está terminado pero intencionalmente NO se
+renderiza aún** — no se importa en `+page.svelte` y no tiene entrada en
+`RadialNav` (la etiqueta `nav.hub` ya existe en el diccionario). Varios hrefs
+de recursos son placeholders `#` a la espera de URLs reales. Ver [Problemas
+conocidos / pendientes](#problemas-conocidos--pendientes).
+
+### `Partners.svelte`
+
+Un "muro de logos" de organizadores/sponsors dividido en filas (Invita /
+Aliados / Auspicia / Patrocina / Media partner), con un fade-in de foto de
+fondo vía `IntersectionObserver` en la primera vista, además del footer de
+cierre del sitio (logo de CLBB, tagline, fecha/recinto del evento,
+copyright).
+
+### `AnimatedSvg.svelte` y `Nav.svelte`
+
+Ver [Sistema AnimatedSvg](#sistema-animatedsvg) más arriba. `Nav.svelte` es
+una barra de navegación fija superior con menú hamburguesa — existe en el
+código pero **actualmente no se renderiza** en ningún lado (reemplazada por
+`RadialNav.svelte`).
+
+---
+
+## Estilos / sistema de diseño
+
+Definido en `src/app.css`:
+
+- **Colores**: `--bg: #0a0a0a` (negro casi puro, usado en todas partes), `--yellow: #f5c518` (acento primario, también `#ffcc05` en algunos lugares), grises para texto secundario.
+- **Glassmorphism**: `.glass` (fondo semi-transparente + `backdrop-filter: blur(16px)` + borde sutil), `.glass-hover` (elevación + borde destacado al hacer hover).
+- **Tipografía**:
+  - `--font: 'DobraSlab'` — texto de cuerpo (regular/medium/bold + itálicas)
+  - `--font-heading: 'Chalet'` — todos los encabezados (`h1`–`h6`), pesos 400/500/700
+  - Ambas cargadas vía `@font-face` desde `assets.citylabbiobio.cl`.
+- **Pills**: `.pill`, `.pill-yellow` (acento sólido), `.pill-outline` (con borde), `.pill-dot` (agrega un punto inicial).
+- **Helpers de layout**: `.container` (max-width 1200px, padding responsive), `.section-padding`, `.section-title`, `.section-label`.
+- **Difuminado de bordes de imágenes**: las imágenes a sangre completa (la foto de parallax de About, la foto del recinto en Schedule) usan gradientes lineales `mask-image` / `-webkit-mask-image` para difuminarse hacia el fondo arriba/abajo — notar que la propiedad prefijada usa específicamente la sintaxis `-webkit-linear-gradient(...)` para evitar warnings de lint del IDE.
+- Breakpoints responsive mobile-first en todo el sitio (`767px`, `768px`, `1024px`, etc.), con la mayoría de las secciones teniendo layouts dedicados para mobile (por ejemplo, la orientación de las tarjetas de Projects, el selector de tabs de Agenda, las decoraciones de circuito/barra ocultas del Hero).
+
+---
+
+## Recursos estáticos (`static/assets/`)
+
+| Archivo | Estado |
+|---|---|
+| `favicon.svg` | usado (`app.html`) |
+| `lateral.svg` | usado (preset `aboutProjects`) |
+| `barra.svg` | usado (`Hero.svelte`) |
+| `logo-clbb02.svg` | usado (preset `clbbLogo`, clases renombradas a `.clbb-logo` para evitar colisiones) |
+| `trama_encabezado.svg` | usado (preset `tramaEncabezado`, closing shot de Schedule) |
+| `barra superior.svg`, `trama diagonal.svg`, `trama inferior.svg`, `vertical.svg` | presentes, aún sin conectar — reservados para uso futuro |
+
+Los archivos de fuentes licenciadas (`Chalet *.otf`, `DobraSlab-*.ttf`) viven
+en `static/` para tooling local pero están **ignorados en git** — deben
+agregarse manualmente para desarrollo local (el build de producción los
+referencia vía las URLs de `assets.citylabbiobio.cl` en `app.css`, no las
+copias locales).
+
+---
+
+## Infraestructura y despliegue
+
+- **Hosting**: AWS Amplify, configurado vía `amplify.yml`:
+  ```yaml
+  preBuild: npm ci
+  build:    npm run build
+  artifacts: build/**/*   # salida de adapter-static
+  ```
+- **Sincronización CI**: `.github/workflows/notify-fork.yml` se dispara en
+  cada push a `master`, enviando un evento `repository_dispatch`
+  (`upstream-push`) a `citylab-biobio/citysciencebiobio` (el repo desde el
+  cual Amplify realmente construye).
+- **Medios y video**: servidos desde CloudFront (`d26q11cgz8q0ri.cloudfront.net`).
+- **Fuentes**: servidas desde `assets.citylabbiobio.cl`.
+- **Analítica**: Google tag (`G-4FS5M1CZNG`) inyectado directamente en `app.html`.
+
+---
+
+## Desarrollo local
+
+```bash
+npm install --legacy-peer-deps   # necesario por desajustes de peer-deps
+npm run dev                       # inicia el servidor de desarrollo de Vite
+npm run build                     # build estático → build/
+npm run preview                   # previsualiza el build de producción
+```
+
+Notas:
+
+- Colocar los archivos de fuentes licenciadas (`Chalet *.otf`,
+  `DobraSlab-*.ttf`) en `static/` si se necesitan para tooling/chequeos del
+  IDE local — la app en sí carga las fuentes de forma remota.
+- Como `ssr = false` + `prerender = true`, `hooks.server.js` solo afecta el
+  HTML prerenderizado **en tiempo de build** (el locale por defecto es `es`
+  en build ya que no hay contexto de request). El selector de idioma del
+  lado del cliente (`RadialNav`) funciona de forma independiente vía la
+  cookie `lang`.
+
+---
+
+## Problemas conocidos / pendientes
+
+- `EventHub.svelte` está construido pero **intencionalmente sin conectar** —
+  no se importa en `+page.svelte`, sin link en `RadialNav` (para evitar un
+  anchor `#hub` muerto). Para activarlo: agregar `<EventHub />` a
+  `+page.svelte` y `{ href: '#hub', key: 'hub' }` al array `sections` en
+  `RadialNav.svelte`. Antes de salir a producción, completar los hrefs
+  placeholder `#` en su array `resources` (registro, recinto/mapa, catálogo
+  de datos, kit de prensa).
+- `Nav.svelte` es código muerto sin usar (español hardcodeado, no
+  compatible con i18n) — se mantiene en el repo pero no se importa desde
+  `+page.svelte`.
+- El preset `scheduleDivider` de `AnimatedSvg` está definido pero
+  actualmente sin uso (su uso en `Schedule.svelte` está comentado).
+- El `og:url` de `app.html` (`cityscience.biobio.cl`) puede no coincidir con
+  el dominio real de producción (`cityscience.citylabbiobio.cl`) — verificar
+  antes de confiar en cualquiera de los dos para SEO/compartir en redes.
+- El build produce warnings inofensivos de Rollup referenciando
+  `hydratable`/`untrack`/`fork`/`settled` (Kit 2.6x referenciando símbolos de
+  Svelte 5 no usados en runtime bajo Svelte 4) — no es accionable, el build
+  igual se completa con éxito.
+
+
 # City Science Biobío 2026
+
+**[English](#city-science-biobío-2026) | [Español](#city-science-biobío-2026-es)**
 
 Landing page for **City Science Biobío 2026**, the public-facing event hosted by
 **City Lab Biobío (CLBB)**, affiliated with the **MIT Media Lab / MIT City Science**
@@ -453,3 +971,6 @@ Notes:
 - The `scheduleDivider` `AnimatedSvg` preset is defined but currently unused (its usage in `Schedule.svelte` is commented out).
 - `app.html`'s `og:url` (`cityscience.biobio.cl`) may not match the actual production domain (`cityscience.citylabbiobio.cl`) — verify before relying on either for SEO/sharing.
 - Build produces harmless Rollup warnings referencing `hydratable`/`untrack`/`fork`/`settled` (Kit 2.6x referencing Svelte 5 symbols unused at runtime under Svelte 4) — not actionable, build still completes successfully.
+
+---
+---
